@@ -1,0 +1,75 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="radjavi.smarthome.MainFragment"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorPrimary"
+    >
+
+    <LinearLayout
+        android:id="@+id/connectionStatus"
+        android:background="@color/disconnected"
+        android:layout_width="match_parent"
+        android:layout_height="25dp"
+        android:orientation="horizontal"
+        >
+
+        <TextView
+            android:id="@+id/connectionStatusText"
+            android:textColor="@color/colorPrimaryLight"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="DISCONNECTED"
+            android:gravity="center"
+            android:textStyle="bold"
+            />
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/temperature"
+        android:textColor="@color/colorPrimaryLight"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Temperature: -°C"
+        android:layout_marginTop="40dp"
+        android:layout_marginLeft="15dp"
+        android:textStyle="bold"
+        />
+
+    <TextView
+        android:id="@+id/humidity"
+        android:textColor="@color/colorPrimaryLight"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Humidity: -%"
+        android:layout_marginTop="65dp"
+        android:layout_marginLeft="15dp"
+        android:textStyle="bold"
+        />
+
+    <Switch
+        android:id="@+id/ledSwitch"
+        android:trackTint="@color/colorPrimaryLight"
+        android:textColor="@color/colorPrimaryLight"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="15dp"
+        android:layout_marginTop="105dp"
+        android:checked="false"
+        android:text="LED    "
+        />
+
+    <ToggleButton
+        android:id="@+id/ipToggle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:checked="false"
+        android:text="IP"
+        android:layout_marginTop="40dp"
+        android:layout_marginRight="20dp"
+        android:layout_gravity="right"
+        android:textOff="int.Ip"
+        android:textOn="ext.Ip"
+        />
+</FrameLayout>
