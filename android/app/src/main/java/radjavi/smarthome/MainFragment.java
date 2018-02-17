@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.net.wifi.WifiManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.NotificationCompat;
@@ -15,6 +16,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CompoundButton;
+import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.Switch;
 import android.widget.TextView;
@@ -52,7 +54,7 @@ public class MainFragment extends Fragment {
     private String intIp = "http://192.168.0.101:8080"; // Internal IP
     private String extIp = "http://95.80.50.198:8080"; // External IP
     private Socket mSocket;
-    private LinearLayout connectionStatus;
+    private FrameLayout connectionStatus;
     private Switch ledSwitch;
     private ToggleButton ipToggle;
     private TextView tempText;
@@ -144,8 +146,13 @@ public class MainFragment extends Fragment {
             getActivity().runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    connectionStatusText.setText("CONNECTED");
-                    connectionStatus.setBackgroundColor(getResources().getColor(R.color.connected));
+                    connectionStatusText.setText("Connected");
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                        connectionStatus.setBackground(getResources().getDrawable(R.drawable.greencircle));
+                    }
+                    else {
+                        connectionStatus.setBackgroundColor(getResources().getColor(R.color.connected));
+                    }
                 }
             });
         }
@@ -157,8 +164,13 @@ public class MainFragment extends Fragment {
             getActivity().runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    connectionStatusText.setText("DISCONNECTED");
-                    connectionStatus.setBackgroundColor(getResources().getColor(R.color.disconnected));
+                    connectionStatusText.setText("Disconnected");
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                        connectionStatus.setBackground(getResources().getDrawable(R.drawable.redcircle));
+                    }
+                    else {
+                        connectionStatus.setBackgroundColor(getResources().getColor(R.color.disconnected));
+                    }
                     tempText.setText("Temperature: -\u00b0C");
                     humidText.setText("Humidity: -%");
                 }
@@ -228,7 +240,7 @@ public class MainFragment extends Fragment {
         ledSwitch = (Switch) view.findViewById(R.id.ledSwitch);
         tempText = (TextView) view.findViewById(R.id.temperature);
         humidText = (TextView) view.findViewById(R.id.humidity);
-        connectionStatus = (LinearLayout) view.findViewById(R.id.connectionStatus);
+        connectionStatus = (FrameLayout) view.findViewById(R.id.connectionStatus);
         connectionStatusText = (TextView) view.findViewById(R.id.connectionStatusText);
 
         ledSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
