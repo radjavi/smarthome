@@ -1,23 +1,15 @@
 package radjavi.smarthome;
 
-import android.app.Notification;
-import android.app.NotificationManager;
-import android.app.PendingIntent;
 import android.content.Context;
-import android.content.Intent;
 import android.net.Uri;
-import android.net.wifi.WifiManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.NotificationCompat;
-import android.text.format.Formatter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CompoundButton;
 import android.widget.FrameLayout;
-import android.widget.LinearLayout;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.ToggleButton;
@@ -28,8 +20,6 @@ import com.github.nkzawa.socketio.client.Socket;
 
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import static android.content.Context.WIFI_SERVICE;
 
 
 /**
@@ -60,9 +50,6 @@ public class MainFragment extends Fragment {
     private TextView tempText;
     private TextView humidText;
     private TextView connectionStatusText;
-
-    NotificationCompat.Builder notification;
-    private static final int notificationID = 590283;
 
     private OnFragmentInteractionListener mListener;
 
@@ -119,30 +106,12 @@ public class MainFragment extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
-        notification = new NotificationCompat.Builder(getActivity());
-        notification.setAutoCancel(true);
-    }
-
-    private void ledNotification() {
-        notification.setSmallIcon(R.mipmap.ic_launcher_round);
-        notification.setTicker("LED has been turned on!");
-        notification.setWhen(System.currentTimeMillis());
-        notification.setContentTitle("LED");
-        notification.setContentText("LED has been turned on!");
-        notification.setPriority(Notification.PRIORITY_MAX);
-        notification.setDefaults(Notification.DEFAULT_VIBRATE);
-
-        Intent intent = new Intent(getActivity(), MainActivity.class);
-        PendingIntent pendingIntent = PendingIntent.getActivity(getActivity(), 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-        notification.setContentIntent(pendingIntent);
-
-        NotificationManager nm = (NotificationManager) getActivity().getSystemService(Context.NOTIFICATION_SERVICE);
-        nm.notify(notificationID, notification.build());
     }
 
     private Emitter.Listener socketConnect = new Emitter.Listener() {
         @Override
         public void call(final Object... args) {
+            if (getActivity() == null) return;
             getActivity().runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
@@ -161,6 +130,7 @@ public class MainFragment extends Fragment {
     private Emitter.Listener socketDisconnect = new Emitter.Listener() {
         @Override
         public void call(final Object... args) {
+            if (getActivity() == null) return;
             getActivity().runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
@@ -189,7 +159,6 @@ public class MainFragment extends Fragment {
                     try {
                         value = data.getBoolean("value");
                         ledSwitch.setChecked(value);
-                        //if (value) ledNotification();
                     } catch (JSONException e) {
                         return;
                     }
@@ -204,6 +173,15 @@ public class MainFragment extends Fragment {
             getActivity().runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
+                    // To fix problem with foreground notification clicks
+                    connectionStatusText.setText("Connected");
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                        connectionStatus.setBackground(getResources().getDrawable(R.drawable.greencircle));
+                    }
+                    else {
+                        connectionStatus.setBackgroundColor(getResources().getColor(R.color.connected));
+                    }
+
                     JSONObject data0 = (JSONObject) args[0];
                     JSONObject data1 = (JSONObject) args[1];
                     int temp, humid;

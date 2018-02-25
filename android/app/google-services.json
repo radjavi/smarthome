@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "333234514512",
+    "firebase_url": "https://smart-home-24c6a.firebaseio.com",
+    "project_id": "smart-home-24c6a",
+    "storage_bucket": "smart-home-24c6a.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:333234514512:android:e495294299cd944a",
+        "android_client_info": {
+          "package_name": "radjavi.smarthome"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "333234514512-b2h555het52tqiti8f13h4nn9p92ri9g.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyABkTQ8qWMHQjlXGpIkHkWs0IsagMN4fN4"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
