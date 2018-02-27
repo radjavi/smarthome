@@ -17,6 +17,7 @@ import android.widget.ToggleButton;
 import com.github.nkzawa.emitter.Emitter;
 import com.github.nkzawa.socketio.client.IO;
 import com.github.nkzawa.socketio.client.Socket;
+import com.google.firebase.messaging.FirebaseMessaging;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -46,6 +47,7 @@ public class MainFragment extends Fragment {
     private Socket mSocket;
     private FrameLayout connectionStatus;
     private Switch ledSwitch;
+    private Switch alarmSwitch;
     private ToggleButton ipToggle;
     private TextView tempText;
     private TextView humidText;
@@ -88,6 +90,7 @@ public class MainFragment extends Fragment {
     private void connectSocket() {
         mSocket.connect();
         mSocket.on("led", ledListen);
+        mSocket.on("alarm", alarmListen);
         mSocket.on("tempSensor", tempListen);
         mSocket.on("connect", socketConnect);
         mSocket.on("disconnect", socketDisconnect);
@@ -96,6 +99,7 @@ public class MainFragment extends Fragment {
     private void disconnectSocket() {
         mSocket.disconnect();
         mSocket.off("led", ledListen);
+        mSocket.off("alarm", alarmListen);
         mSocket.off("tempSensor", tempListen);
     }
 
@@ -167,6 +171,25 @@ public class MainFragment extends Fragment {
         }
     };
 
+    private Emitter.Listener alarmListen = new Emitter.Listener() {
+        @Override
+        public void call(final Object... args) {
+            getActivity().runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    JSONObject data = (JSONObject) args[0];
+                    Boolean value;
+                    try {
+                        value = data.getBoolean("value");
+                        alarmSwitch.setChecked(value);
+                    } catch (JSONException e) {
+                        return;
+                    }
+                }
+            });
+        }
+    };
+
     private Emitter.Listener tempListen = new Emitter.Listener() {
         @Override
         public void call(final Object... args) {
@@ -213,23 +236,37 @@ public class MainFragment extends Fragment {
         getActivity().setTitle("Dashboard");
         mSocket = createSocket(intIp);
         connectSocket();
+        FirebaseMessaging.getInstance().subscribeToTopic("all");
 
         ipToggle = (ToggleButton) view.findViewById(R.id.ipToggle);
         ledSwitch = (Switch) view.findViewById(R.id.ledSwitch);
+        alarmSwitch = (Switch) view.findViewById(R.id.alarmSwitch);
         tempText = (TextView) view.findViewById(R.id.temperature);
         humidText = (TextView) view.findViewById(R.id.humidity);
         connectionStatus = (FrameLayout) view.findViewById(R.id.connectionStatus);
         connectionStatusText = (TextView) view.findViewById(R.id.connectionStatusText);
 
-        ledSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+        ledSwitch.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View view) {
                 JSONObject json = new JSONObject();
                 try {
-                    json.put("value", isChecked);
+                    json.put("value", ledSwitch.isChecked());
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
                 mSocket.emit("led", json);
+            }
+        });
+
+        alarmSwitch.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View view) {
+                JSONObject json = new JSONObject();
+                try {
+                    json.put("value", alarmSwitch.isChecked());
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                mSocket.emit("alarm", json);
             }
         });
 
