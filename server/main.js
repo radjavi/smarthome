@@ -4,6 +4,17 @@ server = require('http').createServer(app);
 io = require('socket.io').listen(server); // Web socket server
 io.set('heartbeat timeout', 4000); 
 io.set('heartbeat interval', 2000);
+// Console-stamp
+require('console-stamp')(console, {
+    metadata: function () {
+        return ('[' + process.memoryUsage().rss + ']');
+    },
+    colors: {
+        stamp: 'yellow',
+        label: 'white',
+        metadata: 'green'
+    }
+});
 // Authentication module. 
 var auth = require('http-auth');
 var digest = auth.digest({
@@ -47,7 +58,7 @@ var motionMessage = {
 };
 
 server.listen(8080, function(){
-    console.log("Server is running...");
+    console.log("Server is running at port 8080");
 }); // Start the webserver on port 8080
 
 io.on('connection', function(socket){
