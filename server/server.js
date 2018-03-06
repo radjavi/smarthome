@@ -1,9 +1,18 @@
+var def = require("./definitions");
 var express = require('express'); // Web server
 app = express();
 server = require('http').createServer(app);
 io = require('socket.io').listen(server); // Web socket server
 io.set('heartbeat timeout', 4000); 
 io.set('heartbeat interval', 2000);
+
+// Authentication module. 
+var auth = require('http-auth');
+var digest = auth.digest({
+    realm: "Users",
+    file: __dirname + "/.htdigest"
+});
+
 // Console-stamp
 require('console-stamp')(console, {
     metadata: function () {
@@ -15,15 +24,6 @@ require('console-stamp')(console, {
         metadata: 'green'
     }
 });
-// Authentication module. 
-var auth = require('http-auth');
-var digest = auth.digest({
-    realm: "Users",
-    file: __dirname + "/.htdigest"
-});
-
-app.use(auth.connect(digest)); // Authenticate
-app.use(express.static('public')); // Tell the server that ./public/ contains the static webpages
 
 // Firebase Admin
 var admin = require('firebase-admin');
@@ -32,34 +32,16 @@ admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
   databaseURL: 'https://smart-home-24c6a.firebaseio.com/'
 });
-// See documentation on defining a message payload.
-var ledMessage = {
-    android: {
-      priority: 'high',
-      notification: {
-        title: 'Home',
-        body: 'LED has been turned on!',
-        sound: 'default'
-      }
-    },
-    topic: 'all'
-};
 
-var motionMessage = {
-    android: {
-      priority: 'high',
-      notification: {
-        title: 'Home',
-        body: 'Motion has been detected!',
-        sound: 'default'
-      }
-    },
-    topic: 'all'
-};
+app.use(auth.connect(digest)); // Authenticate
+app.use(express.static('public')); // Tell the server that ./public/ contains the static webpages
 
 server.listen(8080, function(){
     console.log("Server is running at port 8080");
 }); // Start the webserver on port 8080
+
+var SerialPort = require("serialport");
+var serialPort = new SerialPort("/dev/ttyAMA0", {baudRate: 115200});
 
 io.on('connection', function(socket){
     console.log("New client connected: " + socket.id);
@@ -68,14 +50,13 @@ io.on('connection', function(socket){
     });
 });
 
-var SerialPort = require("serialport");
-var serialPort = new SerialPort("/dev/ttyAMA0", {baudRate: 115200});
-
 var rpio = require('rpio');
 rpio.init({gpiomem: false});
 rpio.open(7, rpio.OUTPUT, 0); // LED
 rpio.open(11, rpio.INPUT); // TempSensor
 rpio.open(12, rpio.INPUT); // Motion Detector
+rpio.open(13, rpio.OUTPUT, 0); // Alarm LED
+rpio.open(15, rpio.OUTPUT, 0); // Buzzer
 
 // ----- Global variables -----
 var ledOn = false;
@@ -96,16 +77,30 @@ io.sockets.on('connection', function(socket) { // Gets called whenever a client 
     });
     socket.on('alarm', function(data) {
         alarmOn = data.value;
+        if (alarmOn) { rpio.write(13, 1); buzzer(); console.log("Alarm has been activated."); }
+        else         { rpio.write(13, 0); buzzer(); console.log("Alarm has been deactivated."); }
         io.sockets.emit('alarm', {value: alarmOn});
     });
 });
 
+function buzzer() {
+  for (var i=0; i<3; i++) {
+      rpio.write(15, 1);
+      rpio.msleep(50);
+      rpio.write(15, 0);
+      rpio.msleep(50);
+  }
+}
+
 // GPIO events
 function pollcb(cbpin) {
-    console.log('Pin ' + cbpin + ' value is now ' + rpio.read(cbpin));
+    //console.log('Pin ' + cbpin + ' value is now ' + rpio.read(cbpin));
+
+    // Motion sensor //
     if (cbpin == 12 && alarmOn) {
+        console.log("Motion Detected!");
         // Send a message to devices subscribed to the provided topic.
-        admin.messaging().send(motionMessage)
+        admin.messaging().send(def.motionMsg)
             .then((response) => {
                 // Response is a message ID string.
                 console.log('Successfully sent message:', response);
@@ -115,7 +110,6 @@ function pollcb(cbpin) {
             });
     }
 }
-rpio.poll(7, pollcb, rpio.POLL_HIGH); // LED
 rpio.poll(12, pollcb, rpio.POLL_HIGH); // Motion Detector
 
 // Temp. sensor
@@ -128,4 +122,4 @@ function read() {
     humidity = readout.humidity;
     io.sockets.emit('tempSensor', {value: temperature}, {value: humidity});
 }
-setInterval(read, 1000);
+setInterval(read, 5000);
