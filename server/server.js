@@ -6,6 +6,10 @@ io = require('socket.io').listen(server); // Web socket server
 io.set('heartbeat timeout', 4000); 
 io.set('heartbeat interval', 2000);
 
+// LIRC - For the IR transceiver
+lirc = require('lirc_node');
+lirc.init();
+
 // Authentication module. 
 var auth = require('http-auth');
 var digest = auth.digest({
@@ -71,8 +75,8 @@ io.sockets.on('connection', function(socket) { // Gets called whenever a client 
     socket.emit('alarm', {value: alarmOn});
     socket.on('led', function(data) { // Makes the socket react to 'led' packets by calling this function
         ledOn = data.value; // Updates brightness from the data object
-        if (ledOn) rpio.write(7, 1);
-        else rpio.write(7, 0);
+        if (ledOn) { rpio.write(7, 1); lirc.irsend.send_once("rgb", "BTN_ON"); }
+        else { rpio.write(7, 0); lirc.irsend.send_once("rgb", "BTN_OFF"); }
         io.sockets.emit('led', {value: ledOn}); // Sends the updated brightness to all connected clients
     });
     socket.on('alarm', function(data) {
