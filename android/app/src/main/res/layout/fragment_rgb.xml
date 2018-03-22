@@ -1,0 +1,200 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="radjavi.smarthome.RGBFragment"
+    android:background="@color/colorPrimary"
+    >
+
+    <TextView
+        android:id="@+id/title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="30dp"
+        android:fontFamily="@font/titillium_web"
+        android:text="DESK LIGHT"
+        android:textColor="#cccccc"
+        android:textSize="15dp"
+        android:textStyle="normal" />
+
+    <Button
+        android:id="@+id/BTN_ON"
+        android:layout_width="55dp"
+        android:layout_height="55dp"
+        android:layout_marginLeft="118dp"
+        android:layout_marginTop="188dp"
+        android:background="@drawable/btn_round_stroke"
+        android:fontFamily="@font/titillium_web"
+        android:text="ON"
+        android:textColor="@color/colorPrimaryLight"
+        android:textSize="12sp" />
+
+    <Button
+        android:id="@+id/BTN_OFF"
+        android:layout_width="55dp"
+        android:layout_height="55dp"
+        android:layout_marginLeft="188dp"
+        android:layout_marginTop="188dp"
+        android:background="@drawable/btn_round_stroke"
+        android:fontFamily="@font/titillium_web"
+        android:text="OFF"
+        android:textColor="@color/colorPrimaryLight"
+        android:textSize="12sp" />
+
+    <Button
+        android:id="@+id/BTN_FLASH"
+        android:layout_width="55dp"
+        android:layout_height="55dp"
+        android:layout_marginLeft="48dp"
+        android:layout_marginTop="258dp"
+        android:background="@drawable/btn_round_stroke"
+        android:fontFamily="@font/titillium_web"
+        android:text="FLASH"
+        android:textColor="@color/colorPrimaryLight"
+        android:textSize="12sp" />
+
+    <Button
+        android:id="@+id/BTN_SMOOTH"
+        android:layout_width="55dp"
+        android:layout_height="55dp"
+        android:layout_marginLeft="118dp"
+        android:layout_marginTop="258dp"
+        android:background="@drawable/btn_round_stroke"
+        android:fontFamily="@font/titillium_web"
+        android:text="SMOOTH"
+        android:textColor="@color/colorPrimaryLight"
+        android:textSize="12sp" />
+
+    <Button
+        android:id="@+id/BTN_BRIGHTNESS_UP"
+        android:layout_width="55dp"
+        android:layout_height="55dp"
+        android:layout_marginLeft="188dp"
+        android:layout_marginTop="258dp"
+        android:background="@drawable/btn_round_stroke"
+        android:fontFamily="@font/titillium_web"
+        android:text="+"
+        android:textColor="@color/colorPrimaryLight" />
+
+    <Button
+        android:id="@+id/BTN_BRIGHTNESS_DOWN"
+        android:layout_width="55dp"
+        android:layout_height="55dp"
+        android:layout_marginLeft="258dp"
+        android:layout_marginTop="258dp"
+        android:background="@drawable/btn_round_stroke"
+        android:fontFamily="@font/titillium_web"
+        android:text="-"
+        android:textColor="@color/colorPrimaryLight" />
+
+    <Button
+        android:id="@+id/BTN_RED"
+        android:layout_width="55dp"
+        android:layout_height="55dp"
+        android:layout_marginLeft="48dp"
+        android:layout_marginTop="328dp"
+        android:background="@drawable/btn_red"
+        android:fontFamily="@font/titillium_web" />
+
+    <Button
+        android:id="@+id/BTN_ORANGE"
+        android:layout_width="55dp"
+        android:layout_height="55dp"
+        android:layout_marginLeft="118dp"
+        android:layout_marginTop="328dp"
+        android:background="@drawable/btn_orange"
+        android:fontFamily="@font/titillium_web" />
+
+    <Button
+        android:id="@+id/BTN_ORANGE2"
+        android:layout_width="55dp"
+        android:layout_height="55dp"
+        android:layout_marginLeft="188dp"
+        android:layout_marginTop="328dp"
+        android:background="@drawable/btn_orange2"
+        android:fontFamily="@font/titillium_web" />
+
+    <Button
+        android:id="@+id/BTN_YELLOW"
+        android:layout_width="55dp"
+        android:layout_height="55dp"
+        android:layout_marginLeft="258dp"
+        android:layout_marginTop="328dp"
+        android:background="@drawable/btn_yellow"
+        android:fontFamily="@font/titillium_web" />
+
+    <Button
+        android:id="@+id/BTN_GREEN"
+        android:layout_width="55dp"
+        android:layout_height="55dp"
+        android:layout_marginLeft="48dp"
+        android:layout_marginTop="398dp"
+        android:background="@drawable/btn_green"
+        android:fontFamily="@font/titillium_web" />
+
+    <Button
+        android:id="@+id/BTN_TURQ"
+        android:layout_width="55dp"
+        android:layout_height="55dp"
+        android:layout_marginLeft="118dp"
+        android:layout_marginTop="398dp"
+        android:background="@drawable/btn_turq"
+        android:fontFamily="@font/titillium_web" />
+
+    <Button
+        android:id="@+id/BTN_BLUE3"
+        android:layout_width="55dp"
+        android:layout_height="55dp"
+        android:layout_marginLeft="188dp"
+        android:layout_marginTop="398dp"
+        android:background="@drawable/btn_blue3"
+        android:fontFamily="@font/titillium_web" />
+
+    <Button
+        android:id="@+id/BTN_BLUE2"
+        android:layout_width="55dp"
+        android:layout_height="55dp"
+        android:layout_marginLeft="258dp"
+        android:layout_marginTop="398dp"
+        android:background="@drawable/btn_blue2"
+        android:fontFamily="@font/titillium_web" />
+
+    <Button
+        android:id="@+id/BTN_BLUE"
+        android:layout_width="55dp"
+        android:layout_height="55dp"
+        android:layout_marginLeft="48dp"
+        android:layout_marginTop="468dp"
+        android:background="@drawable/btn_blue"
+        android:fontFamily="@font/titillium_web" />
+
+    <Button
+        android:id="@+id/BTN_PURPLE"
+        android:layout_width="55dp"
+        android:layout_height="55dp"
+        android:layout_marginLeft="118dp"
+        android:layout_marginTop="468dp"
+        android:background="@drawable/btn_purple"
+        android:fontFamily="@font/titillium_web" />
+
+    <Button
+        android:id="@+id/BTN_PINK"
+        android:layout_width="55dp"
+        android:layout_height="55dp"
+        android:layout_marginLeft="188dp"
+        android:layout_marginTop="468dp"
+        android:background="@drawable/btn_pink"
+        android:fontFamily="@font/titillium_web" />
+
+    <Button
+        android:id="@+id/BTN_WHITE"
+        android:layout_width="55dp"
+        android:layout_height="55dp"
+        android:layout_marginLeft="258dp"
+        android:layout_marginTop="468dp"
+        android:background="@drawable/btn_white"
+        android:fontFamily="@font/titillium_web" />
+
+
+</FrameLayout>
