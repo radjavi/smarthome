@@ -1,4 +1,4 @@
-var def = require("./definitions");
+var notif = require("./notifications");
 var express = require('express'); // Web server
 app = express();
 server = require('http').createServer(app);
@@ -104,14 +104,7 @@ function pollcb(cbpin) {
     if (cbpin == 12 && alarmOn) {
         console.log("Motion Detected!");
         // Send a message to devices subscribed to the provided topic.
-        admin.messaging().send(def.motionMsg)
-            .then((response) => {
-                // Response is a message ID string.
-                console.log('Successfully sent message:', response);
-            })
-            .catch((error) => {
-                console.log('Error sending message:', error);
-            });
+        sendNotification(notif.motionMsg);
     }
 }
 rpio.poll(12, pollcb, rpio.POLL_HIGH); // Motion Detector
@@ -119,11 +112,28 @@ rpio.poll(12, pollcb, rpio.POLL_HIGH); // Motion Detector
 // Temp. sensor
 var rpiDhtSensor = require('rpi-dht-sensor');
 var dht = new rpiDhtSensor.DHT11(17);
+var tempSent = false; // Check if temperature notification sent (over 30 Celsius)
 
 function read() {
     var readout = dht.read();
     temperature = readout.temperature;
     humidity = readout.humidity;
     io.sockets.emit('tempSensor', {value: temperature}, {value: humidity});
+    if (temperature == 30 && !tempSent) {
+        sendNotification(notif.tempMsg);
+        tempSent = true;
+    }
+    if (temperature < 30 && tempSent) tempSent = false;
 }
 setInterval(read, 5000);
+
+function sendNotification(message) {
+    admin.messaging().send(message)
+    .then((response) => {
+        // Response is a message ID string.
+        console.log('Successfully sent message:', response);
+    })
+    .catch((error) => {
+        console.log('Error sending message:', error);
+    });
+}
