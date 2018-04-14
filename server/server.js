@@ -96,6 +96,20 @@ function buzzer() {
   }
 }
 
+// RFID Reader
+var rc522 = require("rc522");
+var tags = require("./rfid_tags");
+
+rc522(function(rfidSerialNumber){
+	if (rfidSerialNumber == tags.tag_iman) {
+        alarmOn = !alarmOn;
+        if (alarmOn) { rpio.write(13, 1); buzzer(); console.log("Alarm has been activated by Iman (RFID)"); }
+        else         { rpio.write(13, 0); buzzer(); console.log("Alarm has been deactivated by Iman (RFID)"); }
+        io.sockets.emit('alarm', {value: alarmOn});
+    }
+    else { console.log("Unauthorized tag!"); }
+});
+
 // GPIO events
 function pollcb(cbpin) {
     //console.log('Pin ' + cbpin + ' value is now ' + rpio.read(cbpin));
