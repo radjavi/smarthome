@@ -96,19 +96,11 @@ function buzzer() {
   }
 }
 
-// RFID Reader
-var rc522 = require("rc522");
-var tags = require("./rfid_tags");
-
-rc522(function(rfidSerialNumber){
-	if (rfidSerialNumber == tags.tag_iman) {
-        alarmOn = !alarmOn;
-        if (alarmOn) { rpio.write(13, 1); buzzer(); console.log("Alarm has been activated by Iman (RFID)"); }
-        else         { rpio.write(13, 0); buzzer(); console.log("Alarm has been deactivated by Iman (RFID)"); }
-        io.sockets.emit('alarm', {value: alarmOn});
-    }
-    else { console.log("Unauthorized tag!"); }
-});
+function buzzer2() {
+    rpio.write(15,1);
+    rpio.msleep(100);
+    rpio.write(15,0);
+}
 
 // GPIO events
 function pollcb(cbpin) {
@@ -151,3 +143,17 @@ function sendNotification(message) {
         console.log('Error sending message:', error);
     });
 }
+
+// RFID Reader
+var rc522 = require("rc522");
+var tags = require("./rfid_tags");
+
+rc522(function(rfidSerialNumber){
+	if (rfidSerialNumber == tags.tag_iman) {
+        alarmOn = !alarmOn;
+        if (alarmOn) { rpio.write(13, 1); console.log("Alarm has been activated by Iman (RFID)"); buzzer(); }
+        else         { rpio.write(13, 0); console.log("Alarm has been deactivated by Iman (RFID)"); buzzer(); }
+        io.sockets.emit('alarm', {value: alarmOn});
+    }
+    else { console.log("Unauthorized tag!"); buzzer2(); }
+});
