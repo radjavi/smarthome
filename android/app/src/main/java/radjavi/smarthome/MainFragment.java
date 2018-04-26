@@ -145,8 +145,8 @@ public class MainFragment extends Fragment {
                     else {
                         connectionStatus.setBackgroundColor(getResources().getColor(R.color.disconnected));
                     }
-                    tempText.setText("Temperature: -\u00b0C");
-                    humidText.setText("Humidity: -%");
+                    tempText.setText("0\u00b0C");
+                    humidText.setText("0%");
                 }
             });
         }
@@ -211,8 +211,8 @@ public class MainFragment extends Fragment {
                     try {
                         temp = data0.getInt("value");
                         humid = data1.getInt("value");
-                        tempText.setText("Temperature: " + temp + "\u00b0C");
-                        humidText.setText("Humidity: " + humid + "%");
+                        tempText.setText(temp + "\u00b0C");
+                        humidText.setText(humid + "%");
                     } catch (JSONException e) {
                         return;
                     }
@@ -233,7 +233,6 @@ public class MainFragment extends Fragment {
     public void onViewCreated(View view, Bundle savedInstanceState)
     {
         super.onViewCreated(view, savedInstanceState);
-        getActivity().setTitle("Dashboard");
         mSocket = createSocket(intIp);
         connectSocket();
         FirebaseMessaging.getInstance().subscribeToTopic("all");
