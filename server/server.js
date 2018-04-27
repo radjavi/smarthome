@@ -44,9 +44,6 @@ server.listen(8080, function(){
     console.log("Server is running at port 8080");
 }); // Start the webserver on port 8080
 
-var SerialPort = require("serialport");
-var serialPort = new SerialPort("/dev/ttyAMA0", {baudRate: 115200});
-
 io.on('connection', function(socket){
     console.log("New client connected: " + socket.id);
     socket.on('disconnect', function(){
@@ -57,7 +54,7 @@ io.on('connection', function(socket){
 var rpio = require('rpio');
 rpio.init({gpiomem: false});
 rpio.open(7, rpio.OUTPUT, 0); // LED
-rpio.open(11, rpio.INPUT); // TempSensor
+rpio.open(11, rpio.INPUT, rpio.PULL_UP); // TempSensor
 rpio.open(12, rpio.INPUT); // Motion Detector
 rpio.open(13, rpio.OUTPUT, 0); // Alarm LED
 rpio.open(15, rpio.OUTPUT, 0); // Buzzer
