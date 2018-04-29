@@ -53,7 +53,7 @@ io.on('connection', function(socket){
 
 var rpio = require('rpio');
 rpio.init({gpiomem: false});
-rpio.open(7, rpio.OUTPUT, 0); // LED
+rpio.open(7, rpio.OUTPUT, 0); // Green LED
 rpio.open(11, rpio.INPUT, rpio.PULL_UP); // TempSensor
 rpio.open(12, rpio.INPUT); // Motion Detector
 rpio.open(13, rpio.OUTPUT, 0); // Alarm LED
@@ -71,10 +71,23 @@ io.sockets.on('connection', function(socket) { // Gets called whenever a client 
     socket.emit('tempSensor', {value: temperature}, {value: humidity});
     socket.emit('alarm', {value: alarmOn});
     socket.on('led', function(data) { // Makes the socket react to 'led' packets by calling this function
-        ledOn = data.value; // Updates brightness from the data object
-        if (ledOn) { rpio.write(7, 1); lirc.irsend.send_once("rgb", "BTN_ON"); }
-        else { rpio.write(7, 0); lirc.irsend.send_once("rgb", "BTN_OFF"); }
-        io.sockets.emit('led', {value: ledOn}); // Sends the updated brightness to all connected clients
+        var rgbCode = data.value;
+        switch (rgbCode) {
+            case "BTN_ON":
+                ledOn = true; 
+                //rpio.write(7, 1); 
+                lirc.irsend.send_once("rgb", rgbCode);
+                break;
+            case "BTN_OFF":
+                ledOn = false;
+                //rpio.write(7, 0); 
+                lirc.irsend.send_once("rgb", rgbCode);
+                break;
+            default:
+                lirc.irsend.send_once("rgb", rgbCode);
+                break;
+        }
+        io.sockets.emit('led', {value: ledOn}); // Sends the updated ledOn value to all connected clients
     });
     socket.on('alarm', function(data) {
         alarmOn = data.value;

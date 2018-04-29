@@ -8,6 +8,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.FrameLayout;
 import android.widget.Switch;
@@ -52,6 +53,22 @@ public class MainFragment extends Fragment {
     private TextView tempText;
     private TextView humidText;
     private TextView connectionStatusText;
+    private Button btnFlash;
+    private Button btnSmooth;
+    private Button btnBrightnessUp;
+    private Button btnBrightnessDown;
+    private Button btnRed;
+    private Button btnOrange;
+    private Button btnOrange2;
+    private Button btnYellow;
+    private Button btnGreen;
+    private Button btnTurq;
+    private Button btnBlue3;
+    private Button btnBlue2;
+    private Button btnBlue;
+    private Button btnPurple;
+    private Button btnPink;
+    private Button btnWhite;
 
     private OnFragmentInteractionListener mListener;
 
@@ -244,12 +261,127 @@ public class MainFragment extends Fragment {
         humidText = (TextView) view.findViewById(R.id.humidity);
         connectionStatus = (FrameLayout) view.findViewById(R.id.connectionStatus);
         connectionStatusText = (TextView) view.findViewById(R.id.connectionStatusText);
+        btnFlash = view.findViewById(R.id.BTN_FLASH);
+        btnSmooth = view.findViewById(R.id.BTN_SMOOTH);
+        btnBrightnessUp = view.findViewById(R.id.BTN_BRIGHTNESS_UP);
+        btnBrightnessDown = view.findViewById(R.id.BTN_BRIGHTNESS_DOWN);
+        btnRed = view.findViewById(R.id.BTN_RED);
+        btnOrange = view.findViewById(R.id.BTN_ORANGE);
+        btnOrange2 = view.findViewById(R.id.BTN_ORANGE2);
+        btnYellow = view.findViewById(R.id.BTN_YELLOW);
+        btnGreen = view.findViewById(R.id.BTN_GREEN);
+        btnTurq = view.findViewById(R.id.BTN_TURQ);
+        btnBlue3 = view.findViewById(R.id.BTN_BLUE3);
+        btnBlue2 = view.findViewById(R.id.BTN_BLUE2);
+        btnBlue = view.findViewById(R.id.BTN_BLUE);
+        btnPurple = view.findViewById(R.id.BTN_PURPLE);
+        btnPink = view.findViewById(R.id.BTN_PINK);
+        btnWhite = view.findViewById(R.id.BTN_WHITE);
+
+        btnFlash.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View view) {
+                send_rgb(btnFlash);
+            }
+        });
+
+        btnSmooth.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View view) {
+                send_rgb(btnSmooth);
+            }
+        });
+
+        btnBrightnessUp.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View view) {
+                send_rgb(btnBrightnessUp);
+            }
+        });
+
+        btnBrightnessDown.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View view) {
+                send_rgb(btnBrightnessDown);
+            }
+        });
+
+        btnRed.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View view) {
+                send_rgb(btnRed);
+            }
+        });
+
+        btnOrange.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View view) {
+                send_rgb(btnOrange);
+            }
+        });
+
+        btnOrange2.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View view) {
+                send_rgb(btnOrange2);
+            }
+        });
+
+        btnYellow.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View view) {
+                send_rgb(btnYellow);
+            }
+        });
+
+        btnGreen.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View view) {
+                send_rgb(btnGreen);
+            }
+        });
+
+        btnTurq.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View view) {
+                send_rgb(btnTurq);
+            }
+        });
+
+        btnBlue3.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View view) {
+                send_rgb(btnBlue3);
+            }
+        });
+
+        btnBlue2.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View view) {
+                send_rgb(btnBlue2);
+            }
+        });
+
+        btnBlue.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View view) {
+                send_rgb(btnBlue);
+            }
+        });
+
+        btnPurple.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View view) {
+                send_rgb(btnPurple);
+            }
+        });
+
+        btnPink.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View view) {
+                send_rgb(btnPink);
+            }
+        });
+
+        btnWhite.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View view) {
+                send_rgb(btnWhite);
+            }
+        });
 
         ledSwitch.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
                 JSONObject json = new JSONObject();
                 try {
-                    json.put("value", ledSwitch.isChecked());
+                    if (ledSwitch.isChecked()) {
+                        json.put("value", "BTN_ON");
+                    }
+                    else json.put("value", "BTN_OFF");
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -283,6 +415,16 @@ public class MainFragment extends Fragment {
                 }
             }
         });
+    }
+
+    private void send_rgb(Button btn) {
+        JSONObject json = new JSONObject();
+        try {
+            json.put("value", getResources().getResourceEntryName(btn.getId()));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        mSocket.emit("led", json);
     }
 
     // TODO: Rename method, update argument and hook method into UI event
