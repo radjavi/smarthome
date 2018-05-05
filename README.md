@@ -15,6 +15,6 @@ A server made in Node.js communicates with the GPIO ports in use and emits value
 ### Design update
 <p>Played around with Electron JS and created a simple desktop app and updated the design for the web app at the same time.</p>
 <div style="display:block;float:left;">
-    <img src="screenshots/desktop-app.PNG" height="450"/>
+    <img src="screenshots/desktop-app.PNG" height="400"/>
     <img src="screenshots/web-version-2.0.PNG" height="500" hspace="40"/>
 </div>
