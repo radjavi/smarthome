@@ -1,0 +1,21 @@
+{
+  "name": "desktop-app",
+  "version": "1.0.0",
+  "description": "electron test",
+  "main": "main.js",
+  "dependencies": {
+    "electron-titlebar": "0.0.3",
+    "electron-titlebar-windows": "^3.0.0",
+    "npm": "^6.0.0",
+    "socket.io": "^2.1.0"
+  },
+  "devDependencies": {
+    "electron": "^2.0.0"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "electron ."
+  },
+  "author": "Iman Radjavi",
+  "license": "ISC"
+}
