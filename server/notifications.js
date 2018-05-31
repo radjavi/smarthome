@@ -30,7 +30,7 @@ var tempMsg = {
     priority: 'high',
     notification: {
       title: 'Temperature',
-      body: 'Temperature is 30°C!',
+      body: 'Temperature is 32°C!',
       sound: 'default',
       color: '#E53935'
     }

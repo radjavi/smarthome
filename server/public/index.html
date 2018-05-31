@@ -33,7 +33,7 @@
 
 
 		<script type="text/javascript">
-			var socket = io.connect('http://192.168.0.101:8080/');
+			var socket = io.connect();
 
 			socket.on('led', function (data) {
 				document.getElementById("checkbox").value = data.value;

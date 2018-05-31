@@ -1,10 +1,13 @@
 package radjavi.smarthome;
 
 import android.app.Notification;
+import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
+import android.os.Build;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
@@ -23,35 +26,26 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         Log.d(TAG, "From: " + remoteMessage.getFrom());
 
         Intent intent = new Intent(this, MainActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         PendingIntent pendingIntent = PendingIntent.getActivity(this,0,intent,PendingIntent.FLAG_ONE_SHOT);
-        NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this);
+
+        String channelId = getString(R.string.notification_channel_id);
+        NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this, channelId);
 
         notificationBuilder.setContentTitle(remoteMessage.getNotification().getTitle());
         notificationBuilder.setContentText(remoteMessage.getNotification().getBody());
-        notificationBuilder.setPriority(Notification.PRIORITY_MAX);
         notificationBuilder.setDefaults(Notification.DEFAULT_SOUND);
         notificationBuilder.setAutoCancel(true);
         notificationBuilder.setSmallIcon(R.mipmap.ic_launcher);
         notificationBuilder.setContentIntent(pendingIntent);
 
         NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        // Since android Oreo notification channel is needed.
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            NotificationChannel notificationChannel = new NotificationChannel(channelId, "Alert messages", NotificationManager.IMPORTANCE_HIGH);
+            notificationManager.createNotificationChannel(notificationChannel);
+        }
+
         notificationManager.notify(23535,notificationBuilder.build());
-
-        /*
-        notification.setSmallIcon(R.mipmap.ic_launcher_round);
-        notification.setTicker("LED has been turned on!");
-        notification.setWhen(System.currentTimeMillis());
-        notification.setContentTitle("LED");
-        notification.setContentText("LED has been turned on!");
-        notification.setPriority(Notification.PRIORITY_MAX);
-        notification.setDefaults(Notification.DEFAULT_VIBRATE);
-
-        Intent intent = new Intent(getActivity(), MainActivity.class);
-        PendingIntent pendingIntent = PendingIntent.getActivity(getActivity(), 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-        notification.setContentIntent(pendingIntent);
-
-        NotificationManager nm = (NotificationManager) getActivity().getSystemService(Context.NOTIFICATION_SERVICE);
-        nm.notify(notificationID, notification.build());*/
-
     }
 }

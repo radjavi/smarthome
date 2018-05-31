@@ -6,7 +6,7 @@
   "dependencies": {
     "electron-titlebar": "0.0.3",
     "electron-titlebar-windows": "^3.0.0",
-    "npm": "^6.0.0",
+    "npm": "^6.0.1",
     "socket.io": "^2.1.0"
   },
   "devDependencies": {
