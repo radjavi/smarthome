@@ -1,11 +1,46 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+    <style name="AppTheme" parent="Theme.MaterialComponents.Light.NoActionBar"
+        >
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimaryDark</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+    </style>
+
+    <style name="OutLineTextField" parent="Widget.MaterialComponents.TextInputLayout.FilledBox">
+        <item name="colorAccent">#aaa</item>
+        <item name="android:textColorHint">#aaa</item>
+        <item name="android:textColor">#aaa</item>
+        <item name="colorControlNormal">#aaa</item>
+        <item name="colorControlActivated">#fff</item>
+        <item name="colorControlHighlight">#aaa</item>
+    </style>
+
+    <style name="toolbarTitle" parent="ThemeOverlay.AppCompat.ActionBar">
+        <item name="android:title">Dashboard</item>
+        <item name="android:textColor">#fff</item>
+        <item name="android:textSize">20sp</item>
+        <item name="android:fontFamily">@font/fira_sans</item>
+        <item name="android:layout_gravity">center</item>
+    </style>
+
+    <style name="nav_drawer">
+        <item name="android:listDivider">@color/colorDivider</item>
+        <item name="android:textColorPrimary">@color/colorPrimaryLight</item>
+        <item name="android:textColorSecondary">@color/colorLightGrey</item>
+        <item name="android:fontFamily">@font/fira_sans</item>
+    </style>
+
+    <style name="MyCardViewStyle" parent="Theme.AppCompat.Light">
+        <item name="cardCornerRadius">2dp</item>
+        <item name="cardElevation">2dp</item>
+        <item name="contentPaddingBottom">16dp</item>
+        <item name="contentPaddingTop">16dp</item>
+        <item name="contentPaddingLeft">20dp</item>
+        <item name="contentPaddingRight">20dp</item>
+        <item name="cardBackgroundColor">@color/colorCards</item>
     </style>
 
 </resources>

@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Use DrawerLayout as root container for activity -->
+<android.support.v4.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/drawer_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    >
+
+    <!-- Layout to contain contents of main body of screen (drawer will slide over this) -->
+    <FrameLayout
+        android:id="@+id/content_frame"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorPrimary"
+        >
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/my_toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="@color/colorPrimary"
+            android:elevation="2dp"
+            android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
+            app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+            app:titleTextAppearance="@style/toolbarTitle">
+        </android.support.v7.widget.Toolbar>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="80dp"
+            android:orientation="vertical"
+            >
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:lines="1"
+                android:text="Welcome home,"
+                android:textColor="@color/colorLightGrey"
+                android:textSize="12dp"
+                android:fontFamily="@font/fira_sans"
+                />
+
+            <TextView
+                android:id="@+id/textWelcome"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_marginBottom="20dp"
+                android:lines="1"
+                android:text="Iman Radjavi"
+                android:textColor="@color/colorPrimaryLight"
+                android:textSize="18dp"
+                android:fontFamily="@font/fira_sans_bold"
+                />
+
+            <android.support.v7.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="125dp"
+                android:layout_margin="15dp"
+                style="@style/MyCardViewStyle"
+                app:cardCornerRadius="10dp">
+
+                <TextView
+                    android:text="Temperature"
+                    android:textColor="@color/colorLightGrey"
+                    android:textSize="14sp"
+                    android:fontFamily="@font/fira_sans"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+                <TextView
+                    android:id="@+id/textTemp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="25dp"
+                    android:fontFamily="@font/fira_sans_bold"
+                    android:text="0°C"
+                    android:textColor="@color/colorPrimaryLight"
+                    android:textSize="24sp" />
+
+                <TextView
+                    android:id="@+id/textHumid"
+                    android:text="0%"
+                    android:textColor="@color/colorPrimaryLight"
+                    android:textSize="24sp"
+                    android:fontFamily="@font/fira_sans_bold"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="25dp"
+                    android:layout_marginLeft="90dp"
+                    />
+
+                <TextView
+                    android:id="@+id/tempUpdated"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom"
+                    android:fontFamily="@font/fira_sans_light"
+                    android:text="Last updated: 2018-06-06 14:45"
+                    android:textColor="@color/colorLightGrey"
+                    android:textSize="12sp" />
+
+            </android.support.v7.widget.CardView>
+        </LinearLayout>
+    </FrameLayout>
+
+    <!-- Container for contents of drawer - use NavigationView to make configuration easier -->
+    <android.support.design.widget.NavigationView
+        android:id="@+id/nav_view"
+        android:background="@color/colorCards"
+        android:layout_width="250dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        android:fitsSystemWindows="true"
+        app:itemTextColor="#fff"
+        app:itemIconTint="#fff"
+        app:menu="@menu/drawer_view"
+        app:headerLayout="@layout/nav_header"
+        android:theme="@style/nav_drawer"
+        />
+
+</android.support.v4.widget.DrawerLayout>

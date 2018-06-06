@@ -123,18 +123,6 @@
         android:checked="false"
         />
 
-    <ToggleButton
-        android:id="@+id/ipToggle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:checked="false"
-        android:text="IP"
-        android:layout_marginTop="52dp"
-        android:layout_marginLeft="250dp"
-        android:textOff="int.Ip"
-        android:textOn="ext.Ip"
-        />
-
     <Button
         android:id="@+id/BTN_FLASH"
         android:layout_width="40dp"

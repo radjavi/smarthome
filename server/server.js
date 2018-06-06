@@ -1,21 +1,8 @@
 var notif = require("./notifications");
-var express = require('express'); // Web server
-app = express();
-server = require('http').createServer(app);
-io = require('socket.io').listen(server); // Web socket server
-io.set('heartbeat timeout', 4000); 
-io.set('heartbeat interval', 2000);
 
 // LIRC - For the IR transceiver
 lirc = require('lirc_node');
 lirc.init();
-
-// Authentication module. 
-var auth = require('http-auth');
-var digest = auth.digest({
-    realm: "Users",
-    file: __dirname + "/.htdigest"
-});
 
 // Console-stamp
 require('console-stamp')(console, {
@@ -36,20 +23,11 @@ admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
   databaseURL: 'https://smart-home-24c6a.firebaseio.com/'
 });
-
-app.use(auth.connect(digest)); // Authenticate
-app.use(express.static('public')); // Tell the server that ./public/ contains the static webpages
-
-server.listen(8080, function(){
-    console.log("Server is running at port 8080");
-}); // Start the webserver on port 8080
-
-io.on('connection', function(socket){
-    console.log("New client connected: " + socket.id);
-    socket.on('disconnect', function(){
-        console.log("Client disconnected: " + socket.id);
-    });
-});
+// Get database references
+var db = admin.database();
+var alarmRef = db.ref().child("alarm");
+var ledRef = db.ref().child("led");
+var tempSensorRef = db.ref().child("tempSensor");
 
 var rpio = require('rpio');
 rpio.init({gpiomem: false});
@@ -65,36 +43,17 @@ var temperature = 0;
 var humidity = 0;
 var alarmOn = false;
 
-// ----- On client connection -----
-io.sockets.on('connection', function(socket) { // Gets called whenever a client connects
-    socket.emit('led', {value: ledOn}); // Send the new client the current brightness
-    socket.emit('tempSensor', {value: temperature}, {value: humidity});
-    socket.emit('alarm', {value: alarmOn});
-    socket.on('led', function(data) { // Makes the socket react to 'led' packets by calling this function
-        var rgbCode = data.value;
-        switch (rgbCode) {
-            case "BTN_ON":
-                ledOn = true; 
-                //rpio.write(7, 1); 
-                lirc.irsend.send_once("rgb", rgbCode);
-                break;
-            case "BTN_OFF":
-                ledOn = false;
-                //rpio.write(7, 0); 
-                lirc.irsend.send_once("rgb", rgbCode);
-                break;
-            default:
-                lirc.irsend.send_once("rgb", rgbCode);
-                break;
-        }
-        io.sockets.emit('led', {value: ledOn}); // Sends the updated ledOn value to all connected clients
-    });
-    socket.on('alarm', function(data) {
-        alarmOn = data.value;
-        if (alarmOn) { rpio.write(13, 1); buzzer(); console.log("Alarm has been activated."); }
-        else         { rpio.write(13, 0); buzzer(); console.log("Alarm has been deactivated."); }
-        io.sockets.emit('alarm', {value: alarmOn});
-    });
+// Update values on change
+ledRef.on("value", function(snap) {
+  ledOn = snap.val().ledOn;
+  lirc.irsend.send_once("rgb", snap.val().rgbCode);
+});
+alarmRef.on("value", function(snap) {
+  if (alarmOn != snap.val()) {
+    alarmOn = snap.val();
+    if (alarmOn) { rpio.write(13, 1); buzzer(); console.log("Alarm has been activated."); }
+    else         { rpio.write(13, 0); buzzer(); console.log("Alarm has been deactivated."); }
+  }
 });
 
 function buzzer() {
@@ -134,12 +93,16 @@ function read() {
     var readout = dht.read();
     temperature = readout.temperature;
     humidity = readout.humidity;
-    io.sockets.emit('tempSensor', {value: temperature}, {value: humidity});
-    if (temperature == 30 && !tempSent) {
+    tempSensorRef.set({
+      temp: temperature,
+      humid: humidity
+    });
+    if (temperature == 32 && !tempSent) {
+        console.log("Temperature is 32 degrees!");
         sendNotification(notif.tempMsg);
         tempSent = true;
     }
-    if (temperature < 30 && tempSent) tempSent = false;
+    if (temperature < 31 && tempSent) tempSent = false;
 }
 setInterval(read, 5000);
 
@@ -160,10 +123,9 @@ var tags = require("./rfid_tags");
 
 rc522(function(rfidSerialNumber){
 	if (rfidSerialNumber == tags.tag_iman) {
-        alarmOn = !alarmOn;
-        if (alarmOn) { rpio.write(13, 1); console.log("Alarm has been activated by Iman (RFID)"); buzzer(); }
-        else         { rpio.write(13, 0); console.log("Alarm has been deactivated by Iman (RFID)"); buzzer(); }
-        io.sockets.emit('alarm', {value: alarmOn});
+        alarmRef.set(!alarmOn);
     }
     else { console.log("Unauthorized tag!"); buzzer2(); }
 });
+
+console.log("Smart Home is online!");
