@@ -15,14 +15,14 @@
     >
 
     <!-- Login progress -->
-    <ProgressBar
+    <com.airbnb.lottie.LottieAnimationView
         android:id="@+id/login_progress"
-        style="?android:attr/progressBarStyleLarge"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        android:layout_marginTop="250dp"
-        android:visibility="gone" />
+        app:lottie_fileName="home.json"
+        app:lottie_loop="true"
+        android:visibility="gone"
+        />
 
     <ScrollView
         android:id="@+id/login_form"
@@ -34,6 +34,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
+            android:padding="10dp"
             >
 
             <TextView
@@ -42,7 +43,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="30dp"
                 android:layout_marginLeft="10dp"
-                android:layout_marginTop="130dp"
+                android:layout_marginTop="95dp"
                 android:fontFamily="@font/fira_sans_bold"
                 android:text="Sign In"
                 android:textColor="#fff"

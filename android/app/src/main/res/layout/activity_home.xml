@@ -59,7 +59,7 @@
 
             <android.support.v7.widget.CardView
                 android:layout_width="match_parent"
-                android:layout_height="125dp"
+                android:layout_height="wrap_content"
                 android:layout_margin="15dp"
                 style="@style/MyCardViewStyle"
                 app:cardCornerRadius="10dp">
@@ -76,21 +76,21 @@
                     android:id="@+id/textTemp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="25dp"
+                    android:layout_marginTop="20dp"
                     android:fontFamily="@font/fira_sans_bold"
                     android:text="0°C"
                     android:textColor="@color/colorPrimaryLight"
-                    android:textSize="24sp" />
+                    android:textSize="20sp" />
 
                 <TextView
                     android:id="@+id/textHumid"
                     android:text="0%"
                     android:textColor="@color/colorPrimaryLight"
-                    android:textSize="24sp"
+                    android:textSize="20sp"
                     android:fontFamily="@font/fira_sans_bold"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="25dp"
+                    android:layout_marginTop="20dp"
                     android:layout_marginLeft="90dp"
                     />
 
@@ -98,11 +98,257 @@
                     android:id="@+id/tempUpdated"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="bottom"
+                    android:layout_marginTop="54dp"
                     android:fontFamily="@font/fira_sans_light"
                     android:text="Last updated: 2018-06-06 14:45"
                     android:textColor="@color/colorLightGrey"
                     android:textSize="12sp" />
+            </android.support.v7.widget.CardView>
+
+            <android.support.v7.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="15dp"
+                style="@style/MyCardViewStyle"
+                app:cardCornerRadius="10dp">
+
+                <TextView
+                    android:text="Alarm"
+                    android:textColor="@color/colorLightGrey"
+                    android:textSize="14sp"
+                    android:fontFamily="@font/fira_sans"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+                <TextView
+                    android:id="@+id/textArmed"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:fontFamily="@font/fira_sans_bold"
+                    android:text="Disarmed"
+                    android:textColor="@color/colorPrimaryLight"
+                    android:textSize="18sp" />
+
+                <ToggleButton
+                    android:id="@+id/alarmButton"
+                    android:background="@drawable/alarm_button"
+                    android:checked="false"
+                    android:layout_width="90dp"
+                    android:layout_height="40dp"
+                    android:layout_gravity="end|center"
+                    android:fontFamily="@font/fira_sans"
+                    android:textColor="@color/colorPrimaryLight"
+                    />
+
+            </android.support.v7.widget.CardView>
+
+            <android.support.v7.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="15dp"
+                style="@style/MyCardViewStyle"
+                app:cardCornerRadius="10dp">
+
+                <TextView
+                    android:text="Desk Light"
+                    android:textColor="@color/colorLightGrey"
+                    android:textSize="14sp"
+                    android:fontFamily="@font/fira_sans"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+                <TextView
+                    android:id="@+id/lightText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:fontFamily="@font/fira_sans_bold"
+                    android:text="Light is off"
+                    android:textColor="@color/colorPrimaryLight"
+                    android:textSize="18sp" />
+
+                <ToggleButton
+                    android:id="@+id/ledButton"
+                    android:background="@drawable/alarm_button"
+                    android:checked="false"
+                    android:layout_width="90dp"
+                    android:layout_height="40dp"
+                    android:layout_gravity="end"
+                    android:fontFamily="@font/fira_sans"
+                    android:textColor="@color/colorPrimaryLight"
+                    />
+
+                <LinearLayout
+                    android:id="@+id/ledControl"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:layout_marginTop="70dp"
+                    android:visibility="gone"
+                    >
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="horizontal"
+                        android:weightSum="4"
+                        >
+
+                        <Button
+                            android:id="@+id/BTN_FLASH"
+                            android:background="@drawable/light_button"
+                            android:layout_width="70dp"
+                            android:layout_height="40dp"
+                            android:text="Flash"
+                            android:fontFamily="@font/fira_sans"
+                            android:textColor="@color/colorPrimaryLight"
+                            android:layout_weight="1"
+                            />
+
+                        <Button
+                            android:id="@+id/BTN_SMOOTH"
+                            android:background="@drawable/light_button"
+                            android:layout_width="80dp"
+                            android:layout_height="40dp"
+                            android:layout_marginLeft="10dp"
+                            android:text="Smooth"
+                            android:fontFamily="@font/fira_sans"
+                            android:textColor="@color/colorPrimaryLight"
+                            android:layout_weight="1"
+                            />
+
+                        <Button
+                            android:id="@+id/BTN_BRIGHTNESS_UP"
+                            android:background="@drawable/light_button"
+                            android:layout_width="50dp"
+                            android:layout_height="40dp"
+                            android:layout_marginLeft="10dp"
+                            android:text="+"
+                            android:fontFamily="@font/fira_sans"
+                            android:textColor="@color/colorPrimaryLight"
+                            android:layout_weight="1"
+                            />
+
+                        <Button
+                            android:id="@+id/BTN_BRIGHTNESS_DOWN"
+                            android:background="@drawable/light_button"
+                            android:layout_width="50dp"
+                            android:layout_height="40dp"
+                            android:layout_marginLeft="10dp"
+                            android:text="-"
+                            android:fontFamily="@font/fira_sans"
+                            android:textColor="@color/colorPrimaryLight"
+                            android:layout_weight="1"
+                            />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="horizontal"
+                        android:layout_marginTop="15dp"
+                        >
+
+                        <Button
+                            android:id="@+id/BTN_RED"
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:background="@drawable/btn_red" />
+
+                        <Button
+                            android:id="@+id/BTN_ORANGE"
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:layout_marginLeft="10dp"
+                            android:background="@drawable/btn_orange" />
+
+                        <Button
+                            android:id="@+id/BTN_ORANGE2"
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:layout_marginLeft="10dp"
+                            android:background="@drawable/btn_orange2" />
+
+                        <Button
+                            android:id="@+id/BTN_YELLOW"
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:layout_marginLeft="10dp"
+                            android:background="@drawable/btn_yellow" />
+
+                        <Button
+                            android:id="@+id/BTN_GREEN"
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:layout_marginLeft="10dp"
+                            android:background="@drawable/btn_green" />
+
+                        <Button
+                            android:id="@+id/BTN_TURQ"
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:layout_marginLeft="10dp"
+                            android:background="@drawable/btn_turq" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="horizontal"
+                        android:layout_marginTop="10dp"
+                        >
+
+                        <Button
+                            android:id="@+id/BTN_BLUE3"
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:background="@drawable/btn_blue3"
+                            android:fontFamily="@font/titillium_web" />
+
+                        <Button
+                            android:id="@+id/BTN_BLUE2"
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:layout_marginLeft="10dp"
+                            android:background="@drawable/btn_blue2"
+                            android:fontFamily="@font/titillium_web" />
+
+                        <Button
+                            android:id="@+id/BTN_BLUE"
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:layout_marginLeft="10dp"
+                            android:background="@drawable/btn_blue"
+                            android:fontFamily="@font/titillium_web" />
+
+                        <Button
+                            android:id="@+id/BTN_PURPLE"
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:layout_marginLeft="10dp"
+                            android:background="@drawable/btn_purple"
+                            android:fontFamily="@font/titillium_web" />
+
+                        <Button
+                            android:id="@+id/BTN_PINK"
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:layout_marginLeft="10dp"
+                            android:background="@drawable/btn_pink"
+                            android:fontFamily="@font/titillium_web" />
+
+                        <Button
+                            android:id="@+id/BTN_WHITE"
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:layout_marginLeft="10dp"
+                            android:background="@drawable/btn_white"
+                            android:fontFamily="@font/titillium_web" />
+                    </LinearLayout>
+                </LinearLayout>
 
             </android.support.v7.widget.CardView>
         </LinearLayout>
@@ -111,8 +357,8 @@
     <!-- Container for contents of drawer - use NavigationView to make configuration easier -->
     <android.support.design.widget.NavigationView
         android:id="@+id/nav_view"
-        android:background="@color/colorCards"
-        android:layout_width="250dp"
+        android:background="@color/colorPrimary"
+        android:layout_width="200dp"
         android:layout_height="match_parent"
         android:layout_gravity="start"
         android:fitsSystemWindows="true"
