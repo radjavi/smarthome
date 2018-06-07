@@ -187,6 +187,7 @@ public class HomeActivity extends AppCompatActivity {
                     if (menuItem.getItemId() == R.id.nav_signOut) {
                         FirebaseAuth.getInstance().signOut();
                         Toast.makeText(HomeActivity.this, "Signed out.", Toast.LENGTH_SHORT).show();
+                        FirebaseMessaging.getInstance().unsubscribeFromTopic("all");
                         startActivity(new Intent(HomeActivity.this, LoginActivity.class));
                     }
                     else if (menuItem.getItemId() == R.id.nav_oldActivity) {
