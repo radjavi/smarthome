@@ -9,6 +9,11 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <style name="ActivityTheme" parent="AppTheme"
+        >
+        <item name="android:windowBackground">@color/colorPrimaryDark</item>
+    </style>
+
     <style name="OutLineTextField" parent="Widget.MaterialComponents.TextInputLayout.FilledBox">
         <item name="colorAccent">#aaa</item>
         <item name="android:textColorHint">#aaa</item>
@@ -19,11 +24,15 @@
     </style>
 
     <style name="toolbarTitle" parent="ThemeOverlay.AppCompat.ActionBar">
-        <item name="android:title">Dashboard</item>
+        <item name="android:textColor">#fff</item>
+        <item name="android:textSize">20sp</item>
+        <item name="android:fontFamily">@font/trebucbd</item>
+    </style>
+
+    <style name="toolbarTitleSettings" parent="ThemeOverlay.AppCompat.ActionBar">
         <item name="android:textColor">#fff</item>
         <item name="android:textSize">20sp</item>
         <item name="android:fontFamily">@font/fira_sans</item>
-        <item name="android:layout_gravity">center</item>
     </style>
 
     <style name="nav_drawer">
@@ -35,7 +44,7 @@
 
     <style name="MyCardViewStyle" parent="Theme.AppCompat.Light">
         <item name="cardCornerRadius">2dp</item>
-        <item name="cardElevation">2dp</item>
+        <item name="cardElevation">0dp</item>
         <item name="contentPaddingBottom">16dp</item>
         <item name="contentPaddingTop">16dp</item>
         <item name="contentPaddingLeft">20dp</item>

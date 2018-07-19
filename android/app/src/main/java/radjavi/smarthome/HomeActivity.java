@@ -1,5 +1,7 @@
 package radjavi.smarthome;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
 import android.content.Intent;
 import android.graphics.Color;
 import android.support.annotation.NonNull;
@@ -28,6 +30,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
+import com.airbnb.lottie.LottieAnimationView;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -48,15 +51,23 @@ import java.util.Map;
 public class HomeActivity extends AppCompatActivity {
     private DrawerLayout mDrawerLayout;
     private NavigationView navigationView;
+    private LottieAnimationView mProgressView;
     FirebaseUser user;
+    private boolean connected;
     private DatabaseReference alarmRef;
     private DatabaseReference tempSensorRef;
     private DatabaseReference ledRef;
     private TextView tempText;
     private TextView humidText;
-    private TextView tempUpdated;
+    private TextView textMaxMinTemp;
+    private TextView textMaxMinHumid;
+    private TextView textSync;
     private TextView armedText;
     private TextView lightText;
+    private TextView textWelcomeName;
+    private TextView textWelcome;
+    private FrameLayout firebaseStatus;
+    private FrameLayout piStatus;
     private ToggleButton btnAlarm;
     private ToggleButton btnLed;
     private LinearLayout ledControl;
@@ -77,6 +88,9 @@ public class HomeActivity extends AppCompatActivity {
     private Button btnPurple;
     private Button btnPink;
     private Button btnWhite;
+    private Boolean piOnline = false;
+    private Boolean alarmOn = false;
+    private Boolean ledOn = false;
 
 
     @Override
@@ -95,20 +109,57 @@ public class HomeActivity extends AppCompatActivity {
         ledRef.keepSynced(true);
         FirebaseMessaging.getInstance().subscribeToTopic("all");
 
+        mProgressView = findViewById(R.id.loading_progress);
+        textWelcome = findViewById(R.id.textWelcome);
+        textWelcomeName = findViewById(R.id.textWelcomeName);
+        textWelcomeName.setText(user.getDisplayName());
+        firebaseStatus = findViewById(R.id.firebaseStatus);
+        piStatus = findViewById(R.id.piStatus);
+
+        // Firebase connection status
+        DatabaseReference connectedRef = FirebaseDatabase.getInstance().getReference(".info/connected");
+        connectedRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot snapshot) {
+                connected = snapshot.getValue(Boolean.class);
+                setConnectedInfo();
+                if (connected) setPiInfo();
+            }
+
+            @Override
+            public void onCancelled(DatabaseError error) {
+                System.err.println("Listener was cancelled");
+            }
+        });
+        DatabaseReference piOnlineRef = FirebaseDatabase.getInstance().getReference("piOnline");
+        piOnlineRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot snapshot) {
+                piOnline = snapshot.getValue(Boolean.class);
+                if (connected) setPiInfo();
+            }
+
+            @Override
+            public void onCancelled(DatabaseError error) {
+                System.err.println("Listener was cancelled");
+            }
+        });
+
         tempText = findViewById(R.id.textTemp);
         humidText = findViewById(R.id.textHumid);
-        tempUpdated = findViewById(R.id.tempUpdated);
+        textMaxMinTemp = findViewById(R.id.textMaxMinTemp);
+        textMaxMinHumid = findViewById(R.id.textMaxMinHumid);
+        textSync = findViewById(R.id.textSync);
         // Read from the database
         alarmRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 // This method is called once with the initial value and again
                 // whenever data at this location is updated.
-                Boolean alarmOn = dataSnapshot.getValue(Boolean.class);
+                alarmOn = dataSnapshot.getValue(Boolean.class);
                 if (alarmOn != null) {
                     btnAlarm.setChecked(alarmOn);
-                    if (alarmOn) armedText.setText("Armed");
-                    else armedText.setText("Disarmed");
+                    armedText.setText(alarmOn ? "Armed" : "Disarmed");
                 }
             }
 
@@ -121,7 +172,7 @@ public class HomeActivity extends AppCompatActivity {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 // This method is called once with the initial value and again
                 // whenever data at this location is updated.
-                Boolean ledOn = dataSnapshot.child("ledOn").getValue(Boolean.class);
+                ledOn = dataSnapshot.child("ledOn").getValue(Boolean.class);
                 if (ledOn != null) {
                     btnLed.setChecked(ledOn);
                     lightText.setText(ledOn ? "Light is on" : "Light is off");
@@ -140,10 +191,16 @@ public class HomeActivity extends AppCompatActivity {
                 // whenever data at this location is updated.
                 Integer temp = dataSnapshot.child("temp").getValue(Integer.class);
                 Integer humid = dataSnapshot.child("humid").getValue(Integer.class);
+                Integer minTemp = dataSnapshot.child("minTemp").getValue(Integer.class);
+                Integer maxTemp = dataSnapshot.child("maxTemp").getValue(Integer.class);
+                Integer minHumid = dataSnapshot.child("minHumid").getValue(Integer.class);
+                Integer maxHumid = dataSnapshot.child("maxHumid").getValue(Integer.class);
+                String date = dataSnapshot.child("date").getValue(String.class);
                 if (temp != null) tempText.setText(temp + "\u00b0C");
                 if (humid != null) humidText.setText(humid + "%");
-                String currentDateTimeString = DateFormat.getDateTimeInstance().format(new Date());
-                tempUpdated.setText("Last updated: " + currentDateTimeString);
+                if (minTemp != null && maxTemp != null) textMaxMinTemp.setText(maxTemp + "\u00b0C / " + minTemp + "\u00b0C");
+                if (minHumid != null && maxHumid != null) textMaxMinHumid.setText(maxHumid + " % / " + minHumid + " %");
+                if (date != null) textSync.setText("Last sync: " + date);
             }
 
             @Override
@@ -169,9 +226,7 @@ public class HomeActivity extends AppCompatActivity {
         ActionBar actionbar = getSupportActionBar();
         actionbar.setDisplayHomeAsUpEnabled(true);
         actionbar.setHomeAsUpIndicator(R.drawable.ic_menu);
-
-        TextView textWelcome = findViewById(R.id.textWelcome);
-        textWelcome.setText(user.getDisplayName());
+        actionbar.setDisplayShowTitleEnabled(false);
 
         navigationView = findViewById(R.id.nav_view);
         View hView =  navigationView.getHeaderView(0);
@@ -185,13 +240,10 @@ public class HomeActivity extends AppCompatActivity {
                 public boolean onNavigationItemSelected(MenuItem menuItem) {
                     // set item as selected to persist highlight
                     if (menuItem.getItemId() == R.id.nav_signOut) {
-                        FirebaseAuth.getInstance().signOut();
-                        Toast.makeText(HomeActivity.this, "Signed out.", Toast.LENGTH_SHORT).show();
-                        FirebaseMessaging.getInstance().unsubscribeFromTopic("all");
-                        startActivity(new Intent(HomeActivity.this, LoginActivity.class));
+                        signOut();
                     }
-                    else if (menuItem.getItemId() == R.id.nav_oldActivity) {
-                        startActivity(new Intent(HomeActivity.this, MainActivity.class));
+                    else if (menuItem.getItemId() == R.id.nav_settings) {
+                        startActivity(new Intent(HomeActivity.this, SettingsActivity.class));
                     }
                     // close drawer when item is tapped
                     mDrawerLayout.closeDrawers();
@@ -208,8 +260,7 @@ public class HomeActivity extends AppCompatActivity {
             public void onClick(View view) {
                 boolean checked = btnAlarm.isChecked();
                 alarmRef.setValue(checked);
-                if (checked) armedText.setText("Armed");
-                else armedText.setText("Disarmed");
+                //armedText.setText(checked ? "Armed" : "Disarmed");
             }
         });
         btnLed = findViewById(R.id.ledButton);
@@ -223,9 +274,9 @@ public class HomeActivity extends AppCompatActivity {
                 Map<String, Object> childUpdates = new HashMap<>();
                 childUpdates.put("ledOn", btnLed.isChecked());
                 childUpdates.put("rgbCode", checked ? "BTN_ON" : "BTN_OFF");
-                lightText.setText(checked ? "Light is on" : "Light is off");
                 ledRef.updateChildren(childUpdates);
-                ledControl.setVisibility(checked ? View.VISIBLE : View.GONE);
+                //lightText.setText(checked ? "Light is on" : "Light is off");
+                //ledControl.setVisibility(checked ? View.VISIBLE : View.GONE);
             }
         });
 
@@ -246,6 +297,48 @@ public class HomeActivity extends AppCompatActivity {
         btnPink = findViewById(R.id.BTN_PINK);
         btnWhite = findViewById(R.id.BTN_WHITE);
         set_light_buttons();
+    }
+
+    private void setConnectedInfo() {
+        firebaseStatus.setBackground(connected ? getResources().getDrawable(R.drawable.greencircle) : getResources().getDrawable(R.drawable.redcircle));
+        if (connected) {
+            mProgressView.setVisibility(View.GONE);
+            btnAlarm.setEnabled(true);
+            btnLed.setEnabled(true);
+            btnAlarm.setChecked(alarmOn);
+            btnLed.setChecked(ledOn);
+            ledControl.setVisibility(ledOn ? View.VISIBLE : View.GONE);
+            lightText.setText(ledOn ? "Light is on" : "Light is off");
+        } else {
+            piStatus.setBackground(getResources().getDrawable(R.drawable.orangecircle));
+            mProgressView.setVisibility(View.VISIBLE);
+            mProgressView.playAnimation();
+            btnAlarm.setEnabled(false);
+            btnLed.setEnabled(false);
+            btnAlarm.setChecked(false);
+            btnLed.setChecked(false);
+            ledControl.setVisibility(View.GONE);
+            lightText.setText("Light is off");
+        }
+    }
+
+    private void setPiInfo() {
+        piStatus.setBackground(piOnline ? getResources().getDrawable(R.drawable.greencircle) : getResources().getDrawable(R.drawable.redcircle));
+        if (piOnline) {
+            btnAlarm.setEnabled(true);
+            btnLed.setEnabled(true);
+            btnAlarm.setChecked(alarmOn);
+            btnLed.setChecked(ledOn);
+            ledControl.setVisibility(ledOn ? View.VISIBLE : View.GONE);
+            lightText.setText(ledOn ? "Light is on" : "Light is off");
+        } else {
+            btnAlarm.setEnabled(false);
+            btnLed.setEnabled(false);
+            btnAlarm.setChecked(false);
+            btnLed.setChecked(false);
+            ledControl.setVisibility(View.GONE);
+            lightText.setText("Light is off");
+        }
     }
 
     private void set_light_buttons() {
@@ -358,6 +451,19 @@ public class HomeActivity extends AppCompatActivity {
                 return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void signOut() {
+        FirebaseAuth.getInstance().signOut();
+        Toast.makeText(HomeActivity.this, "Signed out.", Toast.LENGTH_SHORT).show();
+        FirebaseMessaging.getInstance().unsubscribeFromTopic("all");
+        Intent intent = new Intent(this, LoginActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
+                Intent.FLAG_ACTIVITY_CLEAR_TASK |
+                Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
+        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+        finish();
     }
 
 }

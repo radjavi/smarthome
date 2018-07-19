@@ -13,62 +13,165 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/colorPrimary"
+        android:animateLayoutChanges="true"
         >
 
         <android.support.v7.widget.Toolbar
             android:id="@+id/my_toolbar"
             android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
+            android:layout_height="?android:attr/actionBarSize"
             android:background="@color/colorPrimary"
             android:elevation="2dp"
+            android:paddingLeft="6dp"
             android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
-            app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
-            app:titleTextAppearance="@style/toolbarTitle">
+            app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Dashboard"
+                android:textAppearance="@style/toolbarTitle"
+                android:layout_marginRight="72dp"
+                android:gravity="center"/>
         </android.support.v7.widget.Toolbar>
+
+        <com.airbnb.lottie.LottieAnimationView
+            android:id="@+id/loading_progress"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_gravity="center_horizontal"
+            app:lottie_fileName="loader.json"
+            app:lottie_scale="0.6"
+            app:lottie_colorFilter="@color/colorAccent"
+            app:lottie_loop="true"
+            android:visibility="gone"
+            />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginTop="80dp"
+            android:layout_marginLeft="6dp"
+            android:layout_marginRight="6dp"
             android:orientation="vertical"
+            android:animateLayoutChanges="true"
             >
 
-            <TextView
+            <FrameLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="20dp"
-                android:lines="1"
-                android:text="Welcome home,"
-                android:textColor="@color/colorLightGrey"
-                android:textSize="12dp"
-                android:fontFamily="@font/fira_sans"
-                />
-
-            <TextView
-                android:id="@+id/textWelcome"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="20dp"
-                android:layout_marginBottom="20dp"
-                android:lines="1"
-                android:text="Iman Radjavi"
-                android:textColor="@color/colorPrimaryLight"
-                android:textSize="18dp"
-                android:fontFamily="@font/fira_sans_bold"
-                />
-
-            <android.support.v7.widget.CardView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="15dp"
-                style="@style/MyCardViewStyle"
-                app:cardCornerRadius="10dp">
+                android:layout_marginBottom="10dp">
 
                 <TextView
-                    android:text="Temperature"
+                    android:id="@+id/textWelcome"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:layout_marginLeft="20dp"
+                    android:lines="1"
+                    android:text="Welcome home,"
+                    android:textColor="@color/colorDarkGrey"
+                    android:textSize="14dp"
+                    android:fontFamily="@font/trebuc"
+                    />
+
+                <TextView
+                    android:id="@+id/textWelcomeName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginTop="32dp"
+                    android:lines="1"
+                    android:text="Iman Radjavi"
+                    android:textColor="@color/colorPrimaryLight"
+                    android:textSize="18dp"
+                    android:fontFamily="@font/trebucbd"
+                    />
+
+                <TextView
+                    android:id="@+id/textStatus"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="20dp"
+                    android:gravity="right"
+                    android:lines="1"
+                    android:text="Status"
+                    android:textColor="@color/colorPrimaryLight"
+                    android:textSize="14dp"
+                    android:fontFamily="@font/trebucbd"
+                    />
+
+                <TextView
+                    android:id="@+id/firebaseStatusText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="38dp"
+                    android:layout_marginTop="22dp"
+                    android:gravity="right"
+                    android:lines="1"
+                    android:text="firebase"
                     android:textColor="@color/colorLightGrey"
-                    android:textSize="14sp"
-                    android:fontFamily="@font/fira_sans"
+                    android:textSize="12dp"
+                    android:fontFamily="@font/trebuc"
+                    />
+
+                <FrameLayout
+                    android:id="@+id/firebaseStatus"
+                    android:background="@drawable/redcircle"
+                    android:layout_width="7dp"
+                    android:layout_height="7dp"
+                    android:layout_marginTop="27dp"
+                    android:layout_marginRight="20dp"
+                    android:layout_gravity="end"
+                    >
+                </FrameLayout>
+
+                <TextView
+                    android:id="@+id/piStatusText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="38dp"
+                    android:layout_marginTop="38dp"
+                    android:gravity="right"
+                    android:lines="1"
+                    android:text="raspberry"
+                    android:textColor="@color/colorLightGrey"
+                    android:textSize="12dp"
+                    android:fontFamily="@font/trebuc"
+                    />
+
+                <FrameLayout
+                    android:id="@+id/piStatus"
+                    android:background="@drawable/redcircle"
+                    android:layout_width="7dp"
+                    android:layout_height="7dp"
+                    android:layout_marginTop="43dp"
+                    android:layout_marginRight="20dp"
+                    android:layout_gravity="end"
+                    >
+                </FrameLayout>
+
+            </FrameLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:background="@color/colorDark" />
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="20dp">
+
+                <TextView
+                    android:text="TEMPERATURE"
+                    android:textColor="@color/colorDarkGrey"
+                    android:textSize="12sp"
+                    android:fontFamily="@font/trebucbd"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>
 
@@ -76,47 +179,88 @@
                     android:id="@+id/textTemp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp"
-                    android:fontFamily="@font/fira_sans_bold"
+                    android:layout_marginTop="26dp"
+                    android:fontFamily="@font/trebucbd"
                     android:text="0°C"
                     android:textColor="@color/colorPrimaryLight"
-                    android:textSize="20sp" />
+                    android:textSize="24sp" />
 
                 <TextView
                     android:id="@+id/textHumid"
-                    android:text="0%"
+                    android:text="0 %"
                     android:textColor="@color/colorPrimaryLight"
-                    android:textSize="20sp"
-                    android:fontFamily="@font/fira_sans_bold"
+                    android:textSize="24sp"
+                    android:fontFamily="@font/trebucbd"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp"
-                    android:layout_marginLeft="90dp"
+                    android:layout_marginTop="26dp"
+                    android:layout_marginLeft="110dp"
                     />
 
-                <TextView
-                    android:id="@+id/tempUpdated"
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="end">
+
+                    <TextView
+                        android:id="@+id/textSync"
+                        android:text="Last sync: -"
+                        android:textColor="@color/colorDarkGrey"
+                        android:textSize="11sp"
+                        android:fontFamily="@font/trebuc"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        />
+                </LinearLayout>
+
+                <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="54dp"
-                    android:fontFamily="@font/fira_sans_light"
-                    android:text="Last updated: 2018-06-06 14:45"
-                    android:textColor="@color/colorLightGrey"
-                    android:textSize="12sp" />
-            </android.support.v7.widget.CardView>
+                    android:layout_marginTop="60dp">
+                    <TextView
+                        android:id="@+id/textMaxMinTemp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/trebuc"
+                        android:text="0° / 0°"
+                        android:textColor="@color/colorDarkGrey"
+                        android:textSize="12sp" />
+                </LinearLayout>
 
-            <android.support.v7.widget.CardView
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="60dp"
+                    android:layout_marginLeft="110dp">
+                    <TextView
+                        android:id="@+id/textMaxMinHumid"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/trebuc"
+                        android:text="0 % / 0 %"
+                        android:textColor="@color/colorDarkGrey"
+                        android:textSize="12sp" />
+                </LinearLayout>
+
+            </FrameLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:background="@color/colorDark" />
+
+            <FrameLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="15dp"
-                style="@style/MyCardViewStyle"
-                app:cardCornerRadius="10dp">
+                android:layout_margin="20dp">
 
                 <TextView
-                    android:text="Alarm"
-                    android:textColor="@color/colorLightGrey"
-                    android:textSize="14sp"
-                    android:fontFamily="@font/fira_sans"
+                    android:text="ALARM"
+                    android:textColor="@color/colorDarkGrey"
+                    android:textSize="12sp"
+                    android:fontFamily="@font/trebucbd"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>
 
@@ -140,21 +284,26 @@
                     android:fontFamily="@font/fira_sans"
                     android:textColor="@color/colorPrimaryLight"
                     />
+            </FrameLayout>
 
-            </android.support.v7.widget.CardView>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:background="@color/colorDark" />
 
-            <android.support.v7.widget.CardView
+            <FrameLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="15dp"
-                style="@style/MyCardViewStyle"
-                app:cardCornerRadius="10dp">
+                android:layout_margin="20dp"
+                android:animateLayoutChanges="true">
 
                 <TextView
-                    android:text="Desk Light"
-                    android:textColor="@color/colorLightGrey"
-                    android:textSize="14sp"
-                    android:fontFamily="@font/fira_sans"
+                    android:text="DESK LIGHT"
+                    android:textColor="@color/colorDarkGrey"
+                    android:textSize="12sp"
+                    android:fontFamily="@font/trebucbd"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>
 
@@ -174,6 +323,7 @@
                     android:checked="false"
                     android:layout_width="90dp"
                     android:layout_height="40dp"
+                    android:layout_marginTop="2dp"
                     android:layout_gravity="end"
                     android:fontFamily="@font/fira_sans"
                     android:textColor="@color/colorPrimaryLight"
@@ -182,9 +332,10 @@
                 <LinearLayout
                     android:id="@+id/ledControl"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
                     android:orientation="vertical"
                     android:layout_marginTop="70dp"
+                    android:layout_marginBottom="10dp"
                     android:visibility="gone"
                     >
 
@@ -248,49 +399,56 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:orientation="horizontal"
-                        android:layout_marginTop="15dp"
+                        android:layout_marginTop="20dp"
+                        android:weightSum="6"
                         >
 
                         <Button
                             android:id="@+id/BTN_RED"
                             android:layout_width="40dp"
                             android:layout_height="40dp"
-                            android:background="@drawable/btn_red" />
+                            android:background="@drawable/btn_red"
+                            android:layout_weight="1"/>
 
                         <Button
                             android:id="@+id/BTN_ORANGE"
                             android:layout_width="40dp"
                             android:layout_height="40dp"
-                            android:layout_marginLeft="10dp"
-                            android:background="@drawable/btn_orange" />
+                            android:layout_marginLeft="13dp"
+                            android:background="@drawable/btn_orange"
+                            android:layout_weight="1"/>
 
                         <Button
                             android:id="@+id/BTN_ORANGE2"
                             android:layout_width="40dp"
                             android:layout_height="40dp"
-                            android:layout_marginLeft="10dp"
-                            android:background="@drawable/btn_orange2" />
+                            android:layout_marginLeft="13dp"
+                            android:background="@drawable/btn_orange2"
+                            android:layout_weight="1"/>
 
                         <Button
                             android:id="@+id/BTN_YELLOW"
                             android:layout_width="40dp"
                             android:layout_height="40dp"
-                            android:layout_marginLeft="10dp"
-                            android:background="@drawable/btn_yellow" />
+                            android:layout_marginLeft="13dp"
+                            android:background="@drawable/btn_yellow"
+                            android:layout_weight="1"/>
 
                         <Button
                             android:id="@+id/BTN_GREEN"
                             android:layout_width="40dp"
                             android:layout_height="40dp"
-                            android:layout_marginLeft="10dp"
-                            android:background="@drawable/btn_green" />
+                            android:layout_marginLeft="13dp"
+                            android:background="@drawable/btn_green"
+                            android:layout_weight="1"/>
 
                         <Button
                             android:id="@+id/BTN_TURQ"
                             android:layout_width="40dp"
                             android:layout_height="40dp"
-                            android:layout_marginLeft="10dp"
-                            android:background="@drawable/btn_turq" />
+                            android:layout_marginLeft="13dp"
+                            android:background="@drawable/btn_turq"
+                            android:layout_weight="1"/>
 
                     </LinearLayout>
 
@@ -298,7 +456,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:orientation="horizontal"
-                        android:layout_marginTop="10dp"
+                        android:layout_marginTop="12dp"
+                        android:weightSum="6"
                         >
 
                         <Button
@@ -306,51 +465,64 @@
                             android:layout_width="40dp"
                             android:layout_height="40dp"
                             android:background="@drawable/btn_blue3"
-                            android:fontFamily="@font/titillium_web" />
+                            android:fontFamily="@font/titillium_web"
+                            android:layout_weight="1"/>
 
                         <Button
                             android:id="@+id/BTN_BLUE2"
                             android:layout_width="40dp"
                             android:layout_height="40dp"
-                            android:layout_marginLeft="10dp"
+                            android:layout_marginLeft="13dp"
                             android:background="@drawable/btn_blue2"
-                            android:fontFamily="@font/titillium_web" />
+                            android:fontFamily="@font/titillium_web"
+                            android:layout_weight="1"/>
 
                         <Button
                             android:id="@+id/BTN_BLUE"
                             android:layout_width="40dp"
                             android:layout_height="40dp"
-                            android:layout_marginLeft="10dp"
+                            android:layout_marginLeft="13dp"
                             android:background="@drawable/btn_blue"
-                            android:fontFamily="@font/titillium_web" />
+                            android:fontFamily="@font/titillium_web"
+                            android:layout_weight="1"/>
 
                         <Button
                             android:id="@+id/BTN_PURPLE"
                             android:layout_width="40dp"
                             android:layout_height="40dp"
-                            android:layout_marginLeft="10dp"
+                            android:layout_marginLeft="13dp"
                             android:background="@drawable/btn_purple"
-                            android:fontFamily="@font/titillium_web" />
+                            android:fontFamily="@font/titillium_web"
+                            android:layout_weight="1"/>
 
                         <Button
                             android:id="@+id/BTN_PINK"
                             android:layout_width="40dp"
                             android:layout_height="40dp"
-                            android:layout_marginLeft="10dp"
+                            android:layout_marginLeft="13dp"
                             android:background="@drawable/btn_pink"
-                            android:fontFamily="@font/titillium_web" />
+                            android:fontFamily="@font/titillium_web"
+                            android:layout_weight="1"/>
 
                         <Button
                             android:id="@+id/BTN_WHITE"
                             android:layout_width="40dp"
                             android:layout_height="40dp"
-                            android:layout_marginLeft="10dp"
+                            android:layout_marginLeft="13dp"
                             android:background="@drawable/btn_white"
-                            android:fontFamily="@font/titillium_web" />
+                            android:fontFamily="@font/titillium_web"
+                            android:layout_weight="1"/>
                     </LinearLayout>
                 </LinearLayout>
+            </FrameLayout>
 
-            </android.support.v7.widget.CardView>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/colorDark"
+                android:layout_marginRight="20dp"
+                android:layout_marginLeft="20dp" />
+
         </LinearLayout>
     </FrameLayout>
 
@@ -363,7 +535,7 @@
         android:layout_gravity="start"
         android:fitsSystemWindows="true"
         app:itemTextColor="#fff"
-        app:itemIconTint="#fff"
+        app:itemIconTint="@color/colorLightGrey"
         app:menu="@menu/drawer_view"
         app:headerLayout="@layout/nav_header"
         android:theme="@style/nav_drawer"

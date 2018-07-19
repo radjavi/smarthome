@@ -25,9 +25,21 @@ admin.initializeApp({
 });
 // Get database references
 var db = admin.database();
+var connectedRef = db.ref(".info/connected");
+var piOnline = db.ref().child("piOnline");
 var alarmRef = db.ref().child("alarm");
 var ledRef = db.ref().child("led");
 var tempSensorRef = db.ref().child("tempSensor");
+piOnline.set(true);
+piOnline.onDisconnect().set(false);
+connectedRef.on("value", function(snap) {
+  if (snap.val() === true) {
+    piOnline.set(true);
+    console.log("Connected to Firebase!");
+  } else {
+    console.log("Connection to Firebase lost!");
+  }
+});
 
 var rpio = require('rpio');
 rpio.init({gpiomem: false});
