@@ -183,13 +183,13 @@
                     android:fontFamily="@font/trebucbd"
                     android:text="0°C"
                     android:textColor="@color/colorPrimaryLight"
-                    android:textSize="24sp" />
+                    android:textSize="21sp" />
 
                 <TextView
                     android:id="@+id/textHumid"
                     android:text="0 %"
                     android:textColor="@color/colorPrimaryLight"
-                    android:textSize="24sp"
+                    android:textSize="21sp"
                     android:fontFamily="@font/trebucbd"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -216,7 +216,7 @@
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="60dp">
+                    android:layout_marginTop="58dp">
                     <TextView
                         android:id="@+id/textMaxMinTemp"
                         android:layout_width="wrap_content"
@@ -230,7 +230,7 @@
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="60dp"
+                    android:layout_marginTop="58dp"
                     android:layout_marginLeft="110dp">
                     <TextView
                         android:id="@+id/textMaxMinHumid"
@@ -269,7 +269,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="20dp"
-                    android:fontFamily="@font/fira_sans_bold"
+                    android:fontFamily="@font/trebucbd"
                     android:text="Disarmed"
                     android:textColor="@color/colorPrimaryLight"
                     android:textSize="18sp" />
@@ -281,7 +281,7 @@
                     android:layout_width="90dp"
                     android:layout_height="40dp"
                     android:layout_gravity="end|center"
-                    android:fontFamily="@font/fira_sans"
+                    android:fontFamily="@font/trebuc"
                     android:textColor="@color/colorPrimaryLight"
                     />
             </FrameLayout>
@@ -312,7 +312,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="20dp"
-                    android:fontFamily="@font/fira_sans_bold"
+                    android:fontFamily="@font/trebucbd"
                     android:text="Light is off"
                     android:textColor="@color/colorPrimaryLight"
                     android:textSize="18sp" />
@@ -325,7 +325,7 @@
                     android:layout_height="40dp"
                     android:layout_marginTop="2dp"
                     android:layout_gravity="end"
-                    android:fontFamily="@font/fira_sans"
+                    android:fontFamily="@font/trebuc"
                     android:textColor="@color/colorPrimaryLight"
                     />
 
@@ -352,7 +352,7 @@
                             android:layout_width="70dp"
                             android:layout_height="40dp"
                             android:text="Flash"
-                            android:fontFamily="@font/fira_sans"
+                            android:fontFamily="@font/trebuc"
                             android:textColor="@color/colorPrimaryLight"
                             android:layout_weight="1"
                             />
@@ -364,7 +364,7 @@
                             android:layout_height="40dp"
                             android:layout_marginLeft="10dp"
                             android:text="Smooth"
-                            android:fontFamily="@font/fira_sans"
+                            android:fontFamily="@font/trebuc"
                             android:textColor="@color/colorPrimaryLight"
                             android:layout_weight="1"
                             />
@@ -376,7 +376,7 @@
                             android:layout_height="40dp"
                             android:layout_marginLeft="10dp"
                             android:text="+"
-                            android:fontFamily="@font/fira_sans"
+                            android:fontFamily="@font/trebuc"
                             android:textColor="@color/colorPrimaryLight"
                             android:layout_weight="1"
                             />
@@ -388,7 +388,7 @@
                             android:layout_height="40dp"
                             android:layout_marginLeft="10dp"
                             android:text="-"
-                            android:fontFamily="@font/fira_sans"
+                            android:fontFamily="@font/trebuc"
                             android:textColor="@color/colorPrimaryLight"
                             android:layout_weight="1"
                             />
