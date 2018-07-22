@@ -26,10 +26,10 @@ admin.initializeApp({
 // Get database references
 var db = admin.database();
 var connectedRef = db.ref(".info/connected");
-var piOnline = db.ref().child("piOnline");
-var alarmRef = db.ref().child("alarm");
-var ledRef = db.ref().child("led");
-var tempSensorRef = db.ref().child("tempSensor");
+var piOnline = db.ref("piOnline");
+var alarmRef = db.ref("alarm");
+var ledRef = db.ref("led");
+var tempSensorRef = db.ref("tempSensor");
 piOnline.set(true);
 piOnline.onDisconnect().set(false);
 connectedRef.on("value", function(snap) {
@@ -89,9 +89,10 @@ function pollcb(cbpin) {
 
     // Motion sensor //
     if (cbpin == 12 && alarmOn) {
-        console.log("Motion Detected!");
+        var str = "Motion Detected!";
+        console.log(str);
         // Send a message to devices subscribed to the provided topic.
-        sendNotification(notif.motionMsg);
+        sendNotification(str, getDate());
     }
 }
 rpio.poll(12, pollcb, rpio.POLL_HIGH); // Motion Detector
@@ -101,24 +102,76 @@ var rpiDhtSensor = require('rpi-dht-sensor');
 var dht = new rpiDhtSensor.DHT11(17);
 var tempSent = false; // Check if temperature notification sent (over 30 Celsius)
 
+function getDate() {
+  var currentdate = new Date();
+  var datetime =  currentdate.getDate() + "/"
+                  + (currentdate.getMonth()+1)  + "/"
+                  + currentdate.getFullYear() + " - "
+                  + ('0' + currentdate.getHours()).slice(-2) + ":"
+                  + ('0' + currentdate.getMinutes()).slice(-2) + ":"
+                  + ('0' + currentdate.getSeconds()).slice(-2);
+  return datetime;
+}
+
+function setRef(temp, humid) {
+  var minTemp;
+  var maxTemp;
+  var minHumid;
+  var maxHumid;
+  var date = getDate();
+
+  tempSensorRef.once("value", function(data) {
+    minTemp = data.val().minTemp;
+    maxTemp = data.val().maxTemp;
+    minHumid = data.val().minHumid;
+    maxHumid = data.val().maxHumid;
+
+    if (temp > maxTemp) maxTemp = temp;
+    if (temp < minTemp && temp != 0) minTemp = temp;
+    if (humid > maxHumid) maxHumid = humid;
+    if (humid < minHumid && humid != 0) minHumid = humid;
+
+    tempSensorRef.set({
+      temp: temp,
+      humid: humid,
+      minTemp: minTemp,
+      maxTemp: maxTemp,
+      minHumid: minHumid,
+      maxHumid: maxHumid,
+      date: date
+    });
+  });
+}
+
 function read() {
     var readout = dht.read();
     temperature = readout.temperature;
     humidity = readout.humidity;
-    tempSensorRef.set({
-      temp: temperature,
-      humid: humidity
-    });
-    if (temperature == 32 && !tempSent) {
-        console.log("Temperature is 32 degrees!");
-        sendNotification(notif.tempMsg);
+    setRef(temperature, humidity);
+    if (temperature >= 32 && !tempSent) {
+        var str = "Temperature is " + temperature + "°C";
+        console.log(str);
+        sendNotification(str, getDate());
         tempSent = true;
+    }
+    else if (temperature >= 50) {
+        var str = "Temperature is " + temperature + "°C";
+        console.log(str);
+        sendNotification(str, getDate());
+    }
+    else if (temperature >= 40) {
+        var str = "Temperature is " + temperature + "°C";
+        console.log(str);
+        sendNotification(str, getDate());
     }
     if (temperature < 31 && tempSent) tempSent = false;
 }
 setInterval(read, 5000);
 
-function sendNotification(message) {
+function sendNotification(title, body) {
+    var message = notif.msg;
+    message.android.notification.title = title;
+    message.android.notification.body = body;
     admin.messaging().send(message)
     .then((response) => {
         // Response is a message ID string.
