@@ -1,0 +1,74 @@
+@import '~antd/dist/antd.css';
+
+body {
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+#signIn {
+  text-align: center;
+  padding-top: 200px;
+}
+
+#houseLogo {
+  margin-bottom: 50px;
+}
+
+#spinner {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  /* bring your own prefixes */
+  transform: translate(-50%, -50%);
+}
+
+#dashboard {
+  text-align: center;
+  margin: 200px;
+}
+
+#cards {
+
+}
+
+#signOut {
+
+}
+
+.layout {
+  background-color: #fff;
+}
+
+.header {
+  width: 50%;
+  margin: auto;
+}
+
+.dropProfile {
+  float: right;
+}
+
+.content {
+  background-color: #fff;
+  padding: 20px 25% 0 25%;
+}
+
+.temp {
+  text-align: center;
+}
+
+.logo {
+  width: 120px;
+  height: 31px;
+  background: rgba(255,255,255,.2);
+  margin: 16px 24px 16px 0px;
+  float: left;
+}
+
+.login-form {
+  margin: auto;
+  max-width: 300px;
+}
+.login-form-button {
+  width: 100%;
+}
