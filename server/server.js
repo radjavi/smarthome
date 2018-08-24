@@ -147,20 +147,18 @@ function read() {
     var readout = dht.read();
     temperature = readout.temperature;
     humidity = readout.humidity;
+    if (temperature > 50 || humidity > 100 || temperature < 0 || humidity < 0) {
+      console.log("Error: " + temperature + "°C, " + humidity + "%.");
+      return;
+    }
+    var str = "Temperature is " + temperature + "°C";
     setRef(temperature, humidity);
     if (temperature >= 32 && !tempSent) {
-        var str = "Temperature is " + temperature + "°C";
         console.log(str);
         sendNotification(str, getDate());
         tempSent = true;
     }
-    else if (temperature >= 50) {
-        var str = "Temperature is " + temperature + "°C";
-        console.log(str);
-        sendNotification(str, getDate());
-    }
     else if (temperature >= 40) {
-        var str = "Temperature is " + temperature + "°C";
         console.log(str);
         sendNotification(str, getDate());
     }
