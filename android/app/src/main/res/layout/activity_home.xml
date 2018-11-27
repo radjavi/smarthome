@@ -348,14 +348,13 @@
 
                         <Button
                             android:id="@+id/BTN_FLASH"
-                            android:background="@drawable/light_button"
                             android:layout_width="70dp"
                             android:layout_height="40dp"
-                            android:text="Flash"
-                            android:fontFamily="@font/trebuc"
-                            android:textColor="@color/colorPrimaryLight"
                             android:layout_weight="1"
-                            />
+                            android:background="@drawable/light_button"
+                            android:fontFamily="@font/trebuc"
+                            android:text="Flash"
+                            android:textColor="@color/colorPrimaryLight" />
 
                         <Button
                             android:id="@+id/BTN_SMOOTH"

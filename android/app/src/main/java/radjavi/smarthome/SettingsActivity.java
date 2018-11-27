@@ -44,12 +44,16 @@ public class SettingsActivity extends AppCompatActivity {
         Toolbar myToolbar = findViewById(R.id.settings_toolbar);
         setSupportActionBar(myToolbar);
         ActionBar actionbar = getSupportActionBar();
-        actionbar.setDisplayHomeAsUpEnabled(true);
-        actionbar.setHomeAsUpIndicator(R.drawable.ic_arrow_back);
+        if (actionbar != null) {
+            actionbar.setDisplayHomeAsUpEnabled(true);
+            actionbar.setHomeAsUpIndicator(R.drawable.ic_arrow_back);
+        }
 
         user = FirebaseAuth.getInstance().getCurrentUser();
-        displayName = user.getDisplayName();
-        if (displayName != null) displayNameInput.setText(displayName);
+        if (user != null) {
+            displayName = user.getDisplayName();
+            displayNameInput.setText(displayName);
+        }
 
         btnSave.setOnClickListener(new View.OnClickListener() {
             @Override

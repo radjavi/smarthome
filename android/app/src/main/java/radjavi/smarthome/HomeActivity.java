@@ -245,6 +245,9 @@ public class HomeActivity extends AppCompatActivity {
                     else if (menuItem.getItemId() == R.id.nav_settings) {
                         startActivity(new Intent(HomeActivity.this, SettingsActivity.class));
                     }
+                    else if (menuItem.getItemId() == R.id.nav_graph) {
+                        startActivity(new Intent(HomeActivity.this, TempGraphActivity.class));
+                    }
                     // close drawer when item is tapped
                     mDrawerLayout.closeDrawers();
 

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="radjavi.smarthome">
 
     <uses-permission android:name="android.permission.INTERNET" />
@@ -19,14 +20,13 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".SplashScreenActivity"
-            android:theme="@style/ActivityTheme"
-            android:screenOrientation="portrait">
-        </activity>
+            android:screenOrientation="portrait"
+            android:theme="@style/ActivityTheme"></activity>
         <activity
             android:name=".LoginActivity"
             android:label="@string/dashboard"
-            android:theme="@style/ActivityTheme"
-            android:screenOrientation="portrait">
+            android:screenOrientation="portrait"
+            android:theme="@style/ActivityTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -35,12 +35,12 @@
         </activity>
         <activity
             android:name=".HomeActivity"
-            android:theme="@style/ActivityTheme"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait"
+            android:theme="@style/ActivityTheme" />
         <activity
             android:name=".SettingsActivity"
-            android:theme="@style/ActivityTheme"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait"
+            android:theme="@style/ActivityTheme" />
 
         <!--
         Set custom default icon. This is used when no icon is set for incoming notification messages.
@@ -73,6 +73,8 @@
                 <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
             </intent-filter>
         </service>
+
+        <activity android:name=".TempGraphActivity"></activity>
     </application>
 
 </manifest>
