@@ -1,6 +1,6 @@
 # Smart Home
 
-<img src="screenshots/mobile-2.0.png" height="700"/>
+![screenshot](screenshots/mobile-2.0.png)
 
 This is a project that I work with on my spare time. Using Firebase, I have connected my Raspberry Pi 3 to a database where I can store information such as temperature, humidity, button states etc. This way, I can connect my Android app to Firebase and use it to control my home.
 
